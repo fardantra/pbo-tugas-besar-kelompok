@@ -10,14 +10,14 @@ import ui.BuatReservasi.*;
  *
  * @author Fardan
  */
-public class RiwayatReservasi extends javax.swing.JFrame {
+public class CekReservasi extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RiwayatReservasi.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CekReservasi.class.getName());
 
     /**
      * Creates new form Login
      */
-    public RiwayatReservasi() {
+    public CekReservasi() {
         initComponents();
     }
 
@@ -38,7 +38,6 @@ public class RiwayatReservasi extends javax.swing.JFrame {
         pilihButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        pilihButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
 
@@ -61,7 +60,7 @@ public class RiwayatReservasi extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         title.setFont(new java.awt.Font("Poppins Medium", 0, 24)); // NOI18N
-        title.setText("Riwayat Reservasi");
+        title.setText("Cek Reservasi");
 
         title1.setFont(new java.awt.Font("Retro Majestic Free", 0, 18)); // NOI18N
         title1.setText("Bonas Studio");
@@ -79,26 +78,16 @@ public class RiwayatReservasi extends javax.swing.JFrame {
         jTable1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Tanggal", "Nama", "Alamat", "Email", "Paket", "Studio", "Jumlah", "Harga", "Status"
+                "ID", "Tanggal", "Paket", "Studio", "Jumlah", "Harga", "Status"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
-
-        pilihButton2.setBackground(new java.awt.Color(255, 255, 255));
-        pilihButton2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        pilihButton2.setText("Cari Reservasi");
-        pilihButton2.setBorder(javax.swing.BorderFactory.createCompoundBorder());
-        pilihButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pilihButton2ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -110,15 +99,12 @@ public class RiwayatReservasi extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(pilihButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(pilihButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(40, 40, 40))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(title1)
-                            .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pilihButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -128,11 +114,9 @@ public class RiwayatReservasi extends javax.swing.JFrame {
                 .addComponent(title1)
                 .addGap(0, 0, 0)
                 .addComponent(title)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pilihButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(51, 51, 51)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(52, 52, 52)
                 .addComponent(pilihButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
@@ -192,10 +176,6 @@ public class RiwayatReservasi extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_backButtonActionPerformed
 
-    private void pilihButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pilihButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pilihButton2ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -203,11 +183,11 @@ public class RiwayatReservasi extends javax.swing.JFrame {
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RiwayatReservasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CekReservasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RiwayatReservasi().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new CekReservasi().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -219,7 +199,6 @@ public class RiwayatReservasi extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton pilihButton1;
-    private javax.swing.JButton pilihButton2;
     private javax.swing.JLabel title;
     private javax.swing.JLabel title1;
     // End of variables declaration//GEN-END:variables
