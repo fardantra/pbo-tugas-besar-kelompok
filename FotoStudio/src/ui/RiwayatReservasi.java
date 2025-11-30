@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package ui.CekReservasi;
+package ui;
 
 import ui.BuatReservasi.*;
 
@@ -10,14 +10,14 @@ import ui.BuatReservasi.*;
  *
  * @author Fardan
  */
-public class CekReservasi extends javax.swing.JFrame {
+public class RiwayatReservasi extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CekReservasi.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RiwayatReservasi.class.getName());
 
     /**
      * Creates new form Login
      */
-    public CekReservasi() {
+    public RiwayatReservasi() {
         initComponents();
     }
 
@@ -35,12 +35,10 @@ public class CekReservasi extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
         title1 = new javax.swing.JLabel();
-        title2 = new javax.swing.JLabel();
-        title3 = new javax.swing.JLabel();
-        title4 = new javax.swing.JLabel();
-        title5 = new javax.swing.JLabel();
-        pilihButton = new javax.swing.JButton();
         pilihButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        pilihButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
 
@@ -63,36 +61,38 @@ public class CekReservasi extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         title.setFont(new java.awt.Font("Poppins Medium", 0, 24)); // NOI18N
-        title.setText("Pemrosesan");
+        title.setText("Riwayat Reservasi");
 
         title1.setFont(new java.awt.Font("Retro Majestic Free", 0, 18)); // NOI18N
         title1.setText("Bonas Studio");
 
-        title2.setFont(new java.awt.Font("Poppins", 0, 24)); // NOI18N
-        title2.setText("Reservasi Anda telah diproses!");
-
-        title3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        title3.setText("Mohon melakukan pembayaran di kasir saat nanti.");
-
-        title4.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
-        title4.setText("Total Biaya:");
-
-        title5.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        title5.setText("Rp670.000");
-
-        pilihButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        pilihButton.setText("Kembali ke Hompage");
-        pilihButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pilihButtonActionPerformed(evt);
-            }
-        });
-
         pilihButton1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        pilihButton1.setText("Pesan Lagi");
+        pilihButton1.setText("OK");
         pilihButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pilihButton1ActionPerformed(evt);
+            }
+        });
+
+        jTable1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "No", "Tanggal", "Nama", "Alamat", "Email", "Paket", "Studio", "Jumlah", "Harga", "Status"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        pilihButton2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        pilihButton2.setText("Cari");
+        pilihButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pilihButton2ActionPerformed(evt);
             }
         });
 
@@ -103,19 +103,19 @@ public class CekReservasi extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(title5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(title1)
-                    .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(title2, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(title3, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(title4, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(290, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pilihButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pilihButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(pilihButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(40, 40, 40))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(title1)
+                            .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pilihButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,25 +124,25 @@ public class CekReservasi extends javax.swing.JFrame {
                 .addComponent(title1)
                 .addGap(0, 0, 0)
                 .addComponent(title)
-                .addGap(135, 135, 135)
-                .addComponent(title2)
-                .addGap(0, 0, 0)
-                .addComponent(title3)
-                .addGap(46, 46, 46)
-                .addComponent(title4)
-                .addGap(0, 0, 0)
-                .addComponent(title5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pilihButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pilihButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pilihButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(pilihButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
 
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
 
+        backButton.setBackground(new java.awt.Color(102, 102, 102));
         backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back.png"))); // NOI18N
         backButton.setBorder(null);
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -176,17 +176,21 @@ public class CekReservasi extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        this.setSize(800, 600);
-        pack();
+        setSize(new java.awt.Dimension(817, 639));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void pilihButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pilihButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pilihButtonActionPerformed
 
     private void pilihButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pilihButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pilihButton1ActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    private void pilihButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pilihButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pilihButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,11 +199,11 @@ public class CekReservasi extends javax.swing.JFrame {
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CekReservasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiwayatReservasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new CekReservasi().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new RiwayatReservasi().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -208,13 +212,11 @@ public class CekReservasi extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JButton pilihButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JButton pilihButton1;
+    private javax.swing.JButton pilihButton2;
     private javax.swing.JLabel title;
     private javax.swing.JLabel title1;
-    private javax.swing.JLabel title2;
-    private javax.swing.JLabel title3;
-    private javax.swing.JLabel title4;
-    private javax.swing.JLabel title5;
     // End of variables declaration//GEN-END:variables
 }
