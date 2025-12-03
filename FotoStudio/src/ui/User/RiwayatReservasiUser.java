@@ -2,20 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package ui.Homepage;
+package ui.User;
+
+import ui.*;
 
 /**
  *
  * @author Fardan
  */
-public class HomepageUser extends javax.swing.JFrame {
+public class RiwayatReservasiUser extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HomepageUser.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RiwayatReservasiUser.class.getName());
 
     /**
      * Creates new form Login
      */
-    public HomepageUser() {
+    public RiwayatReservasiUser() {
         initComponents();
     }
 
@@ -28,94 +30,96 @@ public class HomepageUser extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         bodyPanel = new javax.swing.JPanel();
         logoLabel = new javax.swing.JLabel();
-        buatReservasiButton = new javax.swing.JButton();
-        riwayatReservasiButton = new javax.swing.JButton();
-        logoutButton = new javax.swing.JButton();
-        usernameLabel = new javax.swing.JLabel();
-        welcomeLabel = new javax.swing.JLabel();
+        judulLabel = new javax.swing.JLabel();
+        okButton = new javax.swing.JButton();
+        riwayatReservasiScrollPane = new javax.swing.JScrollPane();
+        riwayatReservasiTable = new javax.swing.JTable();
         navbarPanel = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         bodyPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        logoLabel.setFont(new java.awt.Font("Retro Majestic Free", 0, 36)); // NOI18N
+        logoLabel.setFont(new java.awt.Font("Retro Majestic Free", 0, 18)); // NOI18N
         logoLabel.setText("Bonas Studio");
 
-        buatReservasiButton.setBackground(new java.awt.Color(255, 255, 255));
-        buatReservasiButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        buatReservasiButton.setText("Buat Reservasi");
-        buatReservasiButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        buatReservasiButton.addActionListener(new java.awt.event.ActionListener() {
+        judulLabel.setFont(new java.awt.Font("Poppins Medium", 0, 24)); // NOI18N
+        judulLabel.setText("Riwayat Reservasi");
+
+        okButton.setBackground(new java.awt.Color(255, 255, 255));
+        okButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        okButton.setText("OK");
+        okButton.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buatReservasiButtonActionPerformed(evt);
+                okButtonActionPerformed(evt);
             }
         });
 
-        riwayatReservasiButton.setBackground(new java.awt.Color(255, 255, 255));
-        riwayatReservasiButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        riwayatReservasiButton.setText("Riwayat Reservasi");
-        riwayatReservasiButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        riwayatReservasiButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                riwayatReservasiButtonActionPerformed(evt);
+        riwayatReservasiTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        riwayatReservasiTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Tanggal", "Nama", "Alamat", "Email", "Paket", "Studio", "Jumlah", "Harga", "Status"
             }
-        });
-
-        logoutButton.setBackground(new java.awt.Color(255, 255, 255));
-        logoutButton.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        logoutButton.setText("Logout");
-        logoutButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        logoutButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logoutButtonActionPerformed(evt);
-            }
-        });
-
-        usernameLabel.setFont(new java.awt.Font("Poppins Medium", 0, 24)); // NOI18N
-        usernameLabel.setText("Nama User");
-
-        welcomeLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        welcomeLabel.setText("Selamat datang,");
+        ));
+        riwayatReservasiScrollPane.setViewportView(riwayatReservasiTable);
 
         javax.swing.GroupLayout bodyPanelLayout = new javax.swing.GroupLayout(bodyPanel);
         bodyPanel.setLayout(bodyPanelLayout);
         bodyPanelLayout.setHorizontalGroup(
             bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bodyPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(bodyPanelLayout.createSequentialGroup()
+                .addContainerGap(564, Short.MAX_VALUE)
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40))
             .addGroup(bodyPanelLayout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(welcomeLabel)
-                    .addComponent(usernameLabel)
-                    .addComponent(riwayatReservasiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buatReservasiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logoLabel))
-                .addContainerGap(496, Short.MAX_VALUE))
+                    .addComponent(riwayatReservasiScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+                    .addGroup(bodyPanelLayout.createSequentialGroup()
+                        .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(logoLabel)
+                            .addComponent(judulLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(40, 40, 40))
         );
         bodyPanelLayout.setVerticalGroup(
             bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bodyPanelLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(logoLabel)
-                .addGap(143, 143, 143)
-                .addComponent(welcomeLabel)
                 .addGap(0, 0, 0)
-                .addComponent(usernameLabel)
-                .addGap(10, 10, 10)
-                .addComponent(buatReservasiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(riwayatReservasiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addComponent(judulLabel)
+                .addGap(53, 53, 53)
+                .addComponent(riwayatReservasiScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
 
         navbarPanel.setBackground(new java.awt.Color(102, 102, 102));
@@ -143,7 +147,7 @@ public class HomepageUser extends javax.swing.JFrame {
             .addGroup(navbarPanelLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(backButton)
-                .addContainerGap(536, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -161,21 +165,13 @@ public class HomepageUser extends javax.swing.JFrame {
             .addComponent(bodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(816, 639));
+        setSize(new java.awt.Dimension(817, 639));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void riwayatReservasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_riwayatReservasiButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_riwayatReservasiButtonActionPerformed
-
-    private void buatReservasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buatReservasiButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buatReservasiButtonActionPerformed
-
-    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_logoutButtonActionPerformed
+    }//GEN-LAST:event_okButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
@@ -188,22 +184,23 @@ public class HomepageUser extends javax.swing.JFrame {
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomepageUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiwayatReservasiUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new HomepageUser().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new RiwayatReservasiUser().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JPanel bodyPanel;
-    private javax.swing.JButton buatReservasiButton;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel judulLabel;
     private javax.swing.JLabel logoLabel;
-    private javax.swing.JButton logoutButton;
     private javax.swing.JPanel navbarPanel;
-    private javax.swing.JButton riwayatReservasiButton;
-    private javax.swing.JLabel usernameLabel;
-    private javax.swing.JLabel welcomeLabel;
+    private javax.swing.JButton okButton;
+    private javax.swing.JScrollPane riwayatReservasiScrollPane;
+    private javax.swing.JTable riwayatReservasiTable;
     // End of variables declaration//GEN-END:variables
 }

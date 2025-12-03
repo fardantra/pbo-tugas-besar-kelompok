@@ -28,143 +28,159 @@ public class Daftar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        leftPanel = new javax.swing.JPanel();
+        rightPanel = new javax.swing.JPanel();
+        logoLabel = new javax.swing.JLabel();
+        daftarLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        nameField = new javax.swing.JTextField();
+        passwordLabel = new javax.swing.JLabel();
         usernameLabel = new javax.swing.JLabel();
         usernameField = new javax.swing.JTextField();
-        passwordLabel = new javax.swing.JLabel();
-        title1 = new javax.swing.JLabel();
-        usernameLabel1 = new javax.swing.JLabel();
-        usernameField1 = new javax.swing.JTextField();
-        usernameLabel2 = new javax.swing.JLabel();
-        usernameField2 = new javax.swing.JTextField();
-        usernameLabel3 = new javax.swing.JLabel();
-        usernameField3 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton4 = new javax.swing.JButton();
+        alamatLabel = new javax.swing.JLabel();
+        alamatField = new javax.swing.JTextField();
+        emailLabel = new javax.swing.JLabel();
+        emailField = new javax.swing.JTextField();
+        passwordField = new javax.swing.JPasswordField();
+        kembaliButton = new javax.swing.JButton();
+        daftarButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+        leftPanel.setBackground(new java.awt.Color(102, 102, 102));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
+        leftPanel.setLayout(leftPanelLayout);
+        leftPanelLayout.setHorizontalGroup(
+            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        leftPanelLayout.setVerticalGroup(
+            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        rightPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel1.setText("Daftar");
+        logoLabel.setFont(new java.awt.Font("Retro Majestic Free", 0, 24)); // NOI18N
+        logoLabel.setText("Bonas Studio");
 
-        usernameLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        usernameLabel.setText("Nama Lengkap");
+        daftarLabel.setFont(new java.awt.Font("Poppins SemiBold", 0, 36)); // NOI18N
+        daftarLabel.setText("Daftar");
 
-        usernameField.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        usernameField.setText("Enter Username");
+        nameLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        nameLabel.setText("Nama Lengkap");
+
+        nameField.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        nameField.setText("Enter Username");
 
         passwordLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         passwordLabel.setText("Password");
 
-        title1.setFont(new java.awt.Font("Retro Majestic Free", 0, 24)); // NOI18N
-        title1.setText("Bonas Studio");
+        usernameLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        usernameLabel.setText("Username");
 
-        usernameLabel1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        usernameLabel1.setText("Username");
+        usernameField.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        usernameField.setText("Enter Username");
 
-        usernameField1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        usernameField1.setText("Enter Username");
+        alamatLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        alamatLabel.setText("Alamat");
 
-        usernameLabel2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        usernameLabel2.setText("Alamat");
+        alamatField.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        alamatField.setText("Enter Username");
 
-        usernameField2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        usernameField2.setText("Enter Username");
+        emailLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        emailLabel.setText("Email");
 
-        usernameLabel3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        usernameLabel3.setText("Email");
+        emailField.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        emailField.setText("Enter Username");
 
-        usernameField3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        usernameField3.setText("Enter Username");
-
-        jPasswordField1.setText("jPasswordField1");
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+        passwordField.setText("jPasswordField1");
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
+                passwordFieldActionPerformed(evt);
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jButton4.setText("Daftar");
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        kembaliButton.setBackground(new java.awt.Color(255, 255, 255));
+        kembaliButton.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        kembaliButton.setText("Kembali");
+        kembaliButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        kembaliButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                kembaliButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        daftarButton.setBackground(new java.awt.Color(255, 255, 255));
+        daftarButton.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        daftarButton.setText("Daftar");
+        daftarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        daftarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                daftarButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
+        rightPanel.setLayout(rightPanelLayout);
+        rightPanelLayout.setHorizontalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rightPanelLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(title1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(rightPanelLayout.createSequentialGroup()
+                        .addComponent(kembaliButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(daftarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(passwordLabel)
-                        .addComponent(jLabel1)
+                        .addComponent(daftarLabel)
+                        .addComponent(nameLabel)
+                        .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
                         .addComponent(usernameLabel)
-                        .addComponent(usernameField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
-                        .addComponent(usernameLabel1)
-                        .addComponent(usernameField1)
-                        .addComponent(usernameLabel2)
-                        .addComponent(usernameField2)
-                        .addComponent(usernameLabel3)
-                        .addComponent(usernameField3)
-                        .addComponent(jPasswordField1)))
+                        .addComponent(usernameField)
+                        .addComponent(alamatLabel)
+                        .addComponent(alamatField)
+                        .addComponent(emailLabel)
+                        .addComponent(emailField)
+                        .addComponent(passwordField)))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        rightPanelLayout.setVerticalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rightPanelLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(title1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17)
-                .addComponent(jLabel1)
+                .addComponent(daftarLabel)
                 .addGap(20, 20, 20)
+                .addComponent(nameLabel)
+                .addGap(2, 2, 2)
+                .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(alamatLabel)
+                .addGap(2, 2, 2)
+                .addComponent(alamatField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(emailLabel)
+                .addGap(2, 2, 2)
+                .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(usernameLabel)
                 .addGap(2, 2, 2)
                 .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(usernameLabel2)
-                .addGap(2, 2, 2)
-                .addComponent(usernameField2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(usernameLabel3)
-                .addGap(2, 2, 2)
-                .addComponent(usernameField3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(usernameLabel1)
-                .addGap(2, 2, 2)
-                .addComponent(usernameField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(passwordLabel)
                 .addGap(2, 2, 2)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(daftarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(kembaliButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -172,26 +188,30 @@ public class Daftar extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setBounds(0, 0, 816, 639);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
+    }//GEN-LAST:event_passwordFieldActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void daftarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_daftarButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_daftarButtonActionPerformed
+
+    private void kembaliButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kembaliButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_kembaliButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,20 +239,21 @@ public class Daftar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JTextField alamatField;
+    private javax.swing.JLabel alamatLabel;
+    private javax.swing.JButton daftarButton;
+    private javax.swing.JLabel daftarLabel;
+    private javax.swing.JTextField emailField;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JButton kembaliButton;
+    private javax.swing.JPanel leftPanel;
+    private javax.swing.JLabel logoLabel;
+    private javax.swing.JTextField nameField;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
-    private javax.swing.JLabel title1;
+    private javax.swing.JPanel rightPanel;
     private javax.swing.JTextField usernameField;
-    private javax.swing.JTextField usernameField1;
-    private javax.swing.JTextField usernameField2;
-    private javax.swing.JTextField usernameField3;
     private javax.swing.JLabel usernameLabel;
-    private javax.swing.JLabel usernameLabel1;
-    private javax.swing.JLabel usernameLabel2;
-    private javax.swing.JLabel usernameLabel3;
     // End of variables declaration//GEN-END:variables
 }
