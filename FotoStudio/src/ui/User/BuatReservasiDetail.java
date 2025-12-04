@@ -4,21 +4,122 @@
  */
 package ui.User;
 
+import db.Koneksi;
+import model.Package;
+import model.User;
+import model.Studio;
+import util.SessionManager;
+import javax.swing.JOptionPane;
+import java.sql.*;
+import java.util.ArrayList;
+
 /**
  *
  * @author Fardan
  */
+
 public class BuatReservasiDetail extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BuatReservasiDetail.class.getName());
-
+    
+    private Package selectedPackage;
+    private java.sql.Date reservationDate;
+    private java.sql.Time reservationTime;
+    private ArrayList<Studio> availableStudios = new ArrayList<>();
+    
     /**
      * Creates new form Login
      */
+    
     public BuatReservasiDetail() {
         initComponents();
     }
+    
+    public BuatReservasiDetail(Package pkg, java.sql.Date date, java.sql.Time time) {
+        this.selectedPackage = pkg;
+        this.reservationDate = date;
+        this.reservationTime = time;
 
+        initComponents();
+        
+        if (!SessionManager.getInstance().isLoggedIn()) {
+            JOptionPane.showMessageDialog(this, "Silakan login terlebih dahulu!");
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+            return;
+        }
+        
+        populateUserData();
+        loadPackageAndStudio();
+    }
+    
+    private void populateUserData() {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        
+        namaField.setText(currentUser.getFullName());
+        alamatField.setText(currentUser.getAddress());
+        emailField.setText(currentUser.getEmail());
+        
+        namaField.setEditable(false);
+        alamatField.setEditable(false);
+        emailField.setEditable(false);
+    }
+    
+    private void loadPackageAndStudio() {
+        paketComboBox.removeAllItems();
+        paketComboBox.addItem("Paket " + selectedPackage.getPackageId());
+        paketComboBox.setEnabled(false);
+        
+        loadAvailableStudios();
+        setupJumlahOrangComboBox();
+    }
+    
+    private void loadAvailableStudios() {
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "SELECT * FROM studio WHERE studio_id = ? AND status = TRUE";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, selectedPackage.getStudioId());
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            studioComboBox.removeAllItems();
+            availableStudios.clear();
+            
+            while (rs.next()) {
+                Studio studio = new Studio();
+                studio.setStudioId(rs.getInt("studio_id"));
+                studio.setCapacity(rs.getInt("capacity"));
+                studio.setStatus(rs.getBoolean("status"));
+                
+                availableStudios.add(studio);
+                studioComboBox.addItem("Studio " + studio.getStudioId());
+            }
+            
+            if (availableStudios.isEmpty()) {
+                JOptionPane.showMessageDialog(this, 
+                    "Tidak ada studio tersedia untuk paket ini!", 
+                    "Studio Tidak Tersedia", 
+                    JOptionPane.WARNING_MESSAGE);
+            }
+            
+            rs.close();
+            pstmt.close();
+            Koneksi.closeConnection(con);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.severe("Error loading studios: " + e.getMessage());
+        }
+    }
+    
+    private void setupJumlahOrangComboBox() {
+        jumlahComboBox.removeAllItems();
+        for (int i = selectedPackage.getMinPerson(); i <= selectedPackage.getMaxPerson(); i++) {
+            jumlahComboBox.addItem(String.valueOf(i));
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -365,7 +466,12 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        if (selectedPackage != null) {
+            new BuatReservasi(selectedPackage).setVisible(true);
+        } else {
+            new PilihPaket().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void namaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaFieldActionPerformed
@@ -380,8 +486,42 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailFieldActionPerformed
 
+    
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
+        if (jumlahComboBox.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Pilih jumlah orang terlebih dahulu!");
+            return;
+        }
+        if (studioComboBox.getSelectedItem() == null || availableStudios.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tidak ada studio tersedia!");
+            return;
+        }
+        try {
+            int jumlahOrang = Integer.parseInt(jumlahComboBox.getSelectedItem().toString());
+            int studioIndex = studioComboBox.getSelectedIndex();
+            Studio selectedStudio = availableStudios.get(studioIndex);
+            
+            // Hitung total harga
+            int totalPrice = (int)(selectedPackage.getPrice() * jumlahOrang);
+            
+            // Lanjut ke konfirmasi pembayaran
+            BuatReservasiBayar bayarForm = new BuatReservasiBayar();
+            bayarForm.setReservationData(
+                selectedPackage, 
+                selectedStudio,
+                reservationDate, 
+                reservationTime, 
+                jumlahOrang, 
+                totalPrice
+            );
+            bayarForm.setVisible(true);
+            
+            this.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "Terjadi kesalahan: " + e.getMessage());
+        }
     }//GEN-LAST:event_okButtonActionPerformed
 
     /**

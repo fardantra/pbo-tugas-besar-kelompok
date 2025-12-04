@@ -4,19 +4,94 @@
  */
 package ui.User;
 
+import db.Koneksi;
+import model.Package;
+import model.Studio;
+import model.User;
+import util.SessionManager;
+import javax.swing.JOptionPane;
+import java.sql.*;
+
 /**
  *
  * @author Fardan
  */
+
 public class BuatReservasiBayar extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BuatReservasiBayar.class.getName());
-
+    private Package selectedPackage;
+    private Studio selectedStudio;
+    private java.sql.Date reservationDate;
+    private java.sql.Time reservationTime;
+    private int jumlahOrang;
+    private int totalPrice;
+    private int generatedReservationId = 0;
+    
+    public BuatReservasiBayar() {
+        initComponents();
+    }
     /**
      * Creates new form Login
      */
-    public BuatReservasiBayar() {
-        initComponents();
+    
+    public void setReservationData(Package pkg, Studio studio, java.sql.Date date, java.sql.Time time, int jumlah, int total) {
+        this.selectedPackage = pkg;
+        this.selectedStudio = studio;
+        this.reservationDate = date;
+        this.reservationTime = time;
+        this.jumlahOrang = jumlah;
+        this.totalPrice = total;
+        
+        saveReservation();
+        updateUI();
+    }
+    
+    private void saveReservation() {
+        try {
+            User currentUser = SessionManager.getInstance().getCurrentUser();
+            
+            Connection con = Koneksi.getConnection();
+            String sql = "INSERT INTO reservation (user_id, package_id, reservation_date, " +
+                        "reservation_time, status_payment, total_price, is_done) " +
+                        "VALUES (?, ?, ?, ?, 'PENDING', ?, FALSE)";
+            
+            PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setInt(1, currentUser.getUserId());
+            pstmt.setInt(2, selectedPackage.getPackageId());
+            pstmt.setDate(3, reservationDate);
+            pstmt.setTime(4, reservationTime);
+            pstmt.setInt(5, totalPrice);
+            
+            int affectedRows = pstmt.executeUpdate();
+            
+            if (affectedRows > 0) {
+                ResultSet generatedKeys = pstmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    generatedReservationId = generatedKeys.getInt(1);
+                }
+                generatedKeys.close();
+            }
+            
+            pstmt.close();
+            Koneksi.closeConnection(con);
+            
+            logger.info("Reservation saved successfully with ID: " + generatedReservationId);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.severe("Error saving reservation: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, 
+                "Gagal menyimpan reservasi!\n" + e.getMessage(), 
+                "Database Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void updateUI() {
+        totalBiayaIsiLabel.setText("Rp" + String.format("%,d", totalPrice));
+        idReservasiIsiLabel.setText(String.valueOf(generatedReservationId));
+        studioIsiLabel.setText("Studio " + selectedStudio.getStudioId());
     }
 
     /**
@@ -221,15 +296,18 @@ public class BuatReservasiBayar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void kembaliHompageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kembaliHompageButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.Homepage.HomepageUser().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_kembaliHompageButtonActionPerformed
 
     private void pesanLagiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesanLagiButtonActionPerformed
-        // TODO add your handling code here:
+        new PilihPaket().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_pesanLagiButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        new PilihPaket().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**

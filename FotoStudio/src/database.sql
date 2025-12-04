@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS bonas_studio;
+USE bonas_studio;
+
 CREATE TABLE studio (
     studio_id INT PRIMARY KEY AUTO_INCREMENT,
     capacity INT NOT NULL,

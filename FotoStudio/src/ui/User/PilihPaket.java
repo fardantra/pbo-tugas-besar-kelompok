@@ -4,19 +4,171 @@
  */
 package ui.User;
 
+
+import db.Koneksi;
+import model.Package;
+import model.User;
+import util.SessionManager;
+import javax.swing.JOptionPane;
+import java.sql.*;
+import java.util.ArrayList;
+
 /**
  *
  * @author Fardan
  */
+
 public class PilihPaket extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PilihPaket.class.getName());
-
+    private ArrayList<Package> packages = new ArrayList<>();
+    
     /**
      * Creates new form Login
      */
     public PilihPaket() {
         initComponents();
+        
+        if (!SessionManager.getInstance().isLoggedIn()) {
+            JOptionPane.showMessageDialog(this, 
+                "Silakan login terlebih dahulu!", 
+                "Akses Ditolak", 
+                JOptionPane.WARNING_MESSAGE);
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+            return;
+        }
+        
+        loadPackages();
+        
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        System.out.println("Welcome, " + currentUser.getFullName());
+    }
+    
+    private void loadPackages() {
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "SELECT * FROM package ORDER BY package_id ASC";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            packages.clear();
+            
+            System.out.println("=== DEBUG: Loading packages ===");
+            int count = 0;
+            
+            while (rs.next()) {
+                Package pkg = new Package();
+                pkg.setPackageId(rs.getInt("package_id"));
+                pkg.setStudioId(rs.getInt("studio_id"));
+                pkg.setName(rs.getString("name"));
+                pkg.setPrice(rs.getInt("price"));
+                pkg.setMinPerson(rs.getInt("min_person"));
+                pkg.setMaxPerson(rs.getInt("max_person"));
+                pkg.setDuration(rs.getInt("duration"));
+                
+                packages.add(pkg);
+                
+                System.out.println("Package " + (count+1) + ": " + pkg.getName() + 
+                                " | Price: " + pkg.getPrice() + 
+                                " | Min: " + pkg.getMinPerson() + 
+                                " | Max: " + pkg.getMaxPerson());
+                count++;
+            }
+            
+            System.out.println("Total packages loaded: " + count);
+            
+            if (count == 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "Tidak ada paket tersedia di database!\nSilakan hubungi admin.", 
+                    "Database Kosong", 
+                    JOptionPane.WARNING_MESSAGE);
+            }
+            
+            rs.close();
+            stmt.close();
+            Koneksi.closeConnection(con);
+            
+            updatePackageDisplay();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.severe("Error loading packages: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, 
+                "Gagal memuat data paket!\n" + e.getMessage(), 
+                "Database Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void updatePackageDisplay() {
+        System.out.println("=== DEBUG: Updating UI with " + packages.size() + " packages ===");
+        
+        try {
+            if (packages.size() >= 1) {
+                Package pkg1 = packages.get(0);
+                jumlahOrangIsiLabel.setText(pkg1.getMinPerson() + "-" + pkg1.getMaxPerson() + " orang");
+                durasiSesiIsiLabel.setText(pkg1.getDuration() + " menit");
+                
+                int price1 = (int) pkg1.getPrice();
+                hargaIsiLabel.setText("Rp" + String.format("%,d", price1) + "/orang");
+                
+                fasilitiasIsi1Label.setText("1 background");
+                fasilitasIsi2Label.setText("Foto hasil jadi per orang");
+                fasilitasIsi3Label.setText("Editing basic");
+                
+                System.out.println("Package 1: " + pkg1.getName() + " - Price: " + pkg1.getPrice());
+            }
+            
+            if (packages.size() >= 2) {
+                Package pkg2 = packages.get(1);
+                jumlahOrangIsiLabel1.setText(pkg2.getMinPerson() + "-" + pkg2.getMaxPerson() + " orang");
+                durasiSesiIsiLabel1.setText(pkg2.getDuration() + " menit");
+                
+                int price2 = (int) pkg2.getPrice();
+                hargaIsiLabel1.setText("Rp" + String.format("%,d", price2) + "/orang");
+                
+                fasilitiasIsi1Label1.setText("1 background");
+                fasilitasIsi2Label1.setText("Foto hasil jadi per orang");
+                fasilitasIsi3Label1.setText("Editing basic");
+                
+                System.out.println("Package 2: " + pkg2.getName() + " - Price: " + pkg2.getPrice());
+            }
+            
+            if (packages.size() >= 3) {
+                Package pkg3 = packages.get(2);
+                jumlahOrangIsiLabel4.setText(pkg3.getMinPerson() + "-" + pkg3.getMaxPerson() + " orang");
+                durasiSesiIsiLabel4.setText(pkg3.getDuration() + " menit");
+                
+                int price3 = (int) pkg3.getPrice();
+                hargaIsiLabel4.setText("Rp" + String.format("%,d", price3) + "/orang");
+                
+                fasilitiasIsi1Label4.setText("2 background");
+                fasilitasIsi2Label4.setText("Foto hasil jadi per orang");
+                fasilitasIsi3Label4.setText("Editing sepuasnya");
+                
+                System.out.println("Package 3: " + pkg3.getName() + " - Price: " + pkg3.getPrice());
+            }
+            
+        } catch (Exception e) {
+            System.out.println("ERROR in updatePackageDisplay: " + e.getMessage());
+            e.printStackTrace();
+            
+            if (packages.size() >= 1) {
+                Package pkg1 = packages.get(0);
+                hargaIsiLabel.setText("Rp" + pkg1.getPrice() + "/orang");
+            }
+            if (packages.size() >= 2) {
+                Package pkg2 = packages.get(1);
+                hargaIsiLabel1.setText("Rp" + pkg2.getPrice() + "/orang");
+            }
+            if (packages.size() >= 3) {
+                Package pkg3 = packages.get(2);
+                hargaIsiLabel4.setText("Rp" + pkg3.getPrice() + "/orang");
+            }
+        }
+        
+        System.out.println("=== DEBUG: UI update completed ===");
     }
 
     /**
@@ -547,20 +699,41 @@ public class PilihPaket extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void openBuatReservasi(Package selectedPackage) {
+        new BuatReservasi(selectedPackage).setVisible(true);
+        this.dispose();
+    }
+    
     private void paketButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paketButtonActionPerformed
-        // TODO add your handling code here:
+        if (packages.size() >= 1) {
+            Package selectedPackage = packages.get(0);
+            openBuatReservasi(selectedPackage);
+        } else {
+            JOptionPane.showMessageDialog(this, "Paket tidak tersedia!");
+        }
     }//GEN-LAST:event_paketButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.Homepage.HomepageUser().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void paketButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paketButton1ActionPerformed
-        // TODO add your handling code here:
+        if (packages.size() >= 2) {
+            Package selectedPackage = packages.get(1);
+            openBuatReservasi(selectedPackage);
+        } else {
+            JOptionPane.showMessageDialog(this, "Paket tidak tersedia!");
+        }
     }//GEN-LAST:event_paketButton1ActionPerformed
 
     private void paketButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paketButton4ActionPerformed
-        // TODO add your handling code here:
+        if (packages.size() >= 3) {
+            Package selectedPackage = packages.get(2);
+            openBuatReservasi(selectedPackage);
+        } else {
+            JOptionPane.showMessageDialog(this, "Paket tidak tersedia!");
+        }
     }//GEN-LAST:event_paketButton4ActionPerformed
 
     /**

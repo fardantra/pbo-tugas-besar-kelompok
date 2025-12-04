@@ -4,21 +4,81 @@
  */
 package ui.User;
 
-import ui.*;
+import model.Package;
+import util.SessionManager;
+import javax.swing.JOptionPane;
+import java.util.Calendar;
 
 /**
  *
  * @author Fardan
  */
+
 public class BuatReservasi extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BuatReservasi.class.getName());
-
+    private Package selectedPackage;
+    
     /**
      * Creates new form Login
      */
+    
     public BuatReservasi() {
+    initComponents();
+    }
+    
+    public BuatReservasi(Package pkg) {
+        this.selectedPackage = pkg;
         initComponents();
+        
+        if (!SessionManager.getInstance().isLoggedIn()) {
+            JOptionPane.showMessageDialog(this, "Silakan login terlebih dahulu!");
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+            return;
+        }
+        
+        setupDatePickers();
+        setupTimePickers();
+    }
+    
+    private void setupDatePickers() {
+        tahunComboBox.removeAllItems();
+        tahunComboBox.addItem("2025");
+        tahunComboBox.addItem("2026");
+        
+        updateDayComboBox();
+        
+        bulanComboBox.addActionListener(e -> updateDayComboBox());
+        tahunComboBox.addActionListener(e -> updateDayComboBox());
+    }
+
+    private void updateDayComboBox() {
+        hariComboBox.removeAllItems();
+        
+        int bulan = bulanComboBox.getSelectedIndex() + 1;
+        int tahun = Integer.parseInt(tahunComboBox.getSelectedItem().toString());
+        
+        Calendar cal = Calendar.getInstance();
+        cal.set(tahun, bulan - 1, 1);
+        int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        
+        for (int i = 1; i <= maxDay; i++) {
+            hariComboBox.addItem(String.valueOf(i));
+        }
+    }
+    
+    private void setupTimePickers() {
+        jamComboBox.removeAllItems();
+        for (int i = 8; i <= 20; i++) {
+            jamComboBox.addItem(String.format("%02d", i));
+        }
+        
+        menitComboBox.removeAllItems();
+        menitComboBox.addItem("00");
+        menitComboBox.addItem("15");
+        menitComboBox.addItem("30");
+        menitComboBox.addItem("45");
     }
 
     /**
@@ -246,15 +306,53 @@ public class BuatReservasi extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bulanComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulanComboBoxActionPerformed
-//        updateDayBox();
+
     }//GEN-LAST:event_bulanComboBoxActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        if (selectedPackage != null) {
+            new ui.User.PilihPaket().setVisible(true);
+        } else {
+            new ui.User.PilihPaket().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
+        try {
+            int tahun = Integer.parseInt(tahunComboBox.getSelectedItem().toString());
+            int bulan = bulanComboBox.getSelectedIndex() + 1;
+            int hari = Integer.parseInt(hariComboBox.getSelectedItem().toString());
+            int jam = Integer.parseInt(jamComboBox.getSelectedItem().toString());
+            int menit = Integer.parseInt(menitComboBox.getSelectedItem().toString());
+            
+            Calendar selectedDate = Calendar.getInstance();
+            selectedDate.set(tahun, bulan - 1, hari, jam, menit, 0);
+            
+            Calendar now = Calendar.getInstance();
+            
+            if (selectedDate.before(now)) {
+                JOptionPane.showMessageDialog(this, 
+                    "Tanggal dan waktu tidak boleh di masa lalu!", 
+                    "Validasi Gagal", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            java.sql.Date sqlDate = new java.sql.Date(selectedDate.getTimeInMillis());
+            java.sql.Time sqlTime = new java.sql.Time(selectedDate.getTimeInMillis());
+            
+            // Pindah ke form detail
+            new BuatReservasiDetail(selectedPackage, sqlDate, sqlTime).setVisible(true);
+            this.dispose();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "Terjadi kesalahan: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_okButtonActionPerformed
 
     /**

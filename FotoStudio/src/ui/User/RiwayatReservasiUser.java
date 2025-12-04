@@ -4,7 +4,12 @@
  */
 package ui.User;
 
-import ui.*;
+import db.Koneksi;
+import model.User;
+import util.SessionManager;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
 
 /**
  *
@@ -19,6 +24,62 @@ public class RiwayatReservasiUser extends javax.swing.JFrame {
      */
     public RiwayatReservasiUser() {
         initComponents();
+        loadReservationHistory();
+    }
+    
+     private void loadReservationHistory() {
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        
+        DefaultTableModel model = (DefaultTableModel) riwayatReservasiTable.getModel();
+        model.setRowCount(0);
+        
+        try {
+            Connection con = Koneksi.getConnection();
+            
+            String sql = "SELECT r.reservation_id, r.reservation_date, " +
+                        "u.full_name, u.address, u.email, " +
+                        "p.name as package_name, p.studio_id, " +
+                        "(r.total_price / p.price) as jumlah_orang, " +
+                        "r.total_price, r.status_payment " +
+                        "FROM reservation r " +
+                        "JOIN user u ON r.user_id = u.user_id " +
+                        "JOIN package p ON r.package_id = p.package_id " +
+                        "WHERE r.user_id = ? " +
+                        "ORDER BY r.created_at DESC";
+            
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, currentUser.getUserId());
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                Object[] row = {
+                    rs.getInt("reservation_id"),
+                    rs.getDate("reservation_date"),
+                    rs.getString("full_name"),
+                    rs.getString("address"),
+                    rs.getString("email"),
+                    rs.getString("package_name"),
+                    "Studio " + rs.getInt("studio_id"),
+                    rs.getInt("jumlah_orang") + " orang",
+                    "Rp" + String.format("%,.0f", rs.getDouble("total_price")),
+                    rs.getString("status_payment")
+                };
+                model.addRow(row);
+            }
+            
+            rs.close();
+            pstmt.close();
+            Koneksi.closeConnection(con);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.severe("Error loading reservation history: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, 
+                "Gagal memuat riwayat reservasi!\n" + e.getMessage(), 
+                "Database Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -170,11 +231,13 @@ public class RiwayatReservasiUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
+        new PilihPaket().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.Homepage.HomepageUser().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**

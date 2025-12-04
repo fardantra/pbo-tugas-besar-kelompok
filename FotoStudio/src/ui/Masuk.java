@@ -4,10 +4,17 @@
  */
 package ui;
 
+import db.Koneksi;
+import model.User;
+import util.SessionManager;
+import javax.swing.JOptionPane;
+import java.sql.*;
+
 /**
  *
  * @author Fardan
  */
+
 public class Masuk extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Masuk.class.getName());
@@ -17,6 +24,12 @@ public class Masuk extends javax.swing.JFrame {
      */
     public Masuk() {
         initComponents();
+        clearPlaceholders();
+    }
+    
+    private void clearPlaceholders() {
+        usernameField.setText("");
+        passwordField.setText("");
     }
 
     /**
@@ -176,9 +189,101 @@ public class Masuk extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_daftarButtonActionPerformed
 
-    private void masukButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masukButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_masukButtonActionPerformed
+    private void masukButtonActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Username dan password harus diisi!", 
+                "Validasi Gagal", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        User user = authenticateUser(username, password);
+        
+        if (user != null) {
+            SessionManager.getInstance().setCurrentUser(user);
+            
+            JOptionPane.showMessageDialog(this, 
+                "Login berhasil!\nSelamat datang, " + user.getFullName(), 
+                "Berhasil", 
+                JOptionPane.INFORMATION_MESSAGE);
+            
+            redirectUserByRole(user);
+            this.dispose();
+            
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Username atau password salah!", 
+                "Login Gagal", 
+                JOptionPane.ERROR_MESSAGE);
+            
+            passwordField.setText("");
+        }
+    }
+
+    private User authenticateUser(String username, String password) {
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setAddress(rs.getString("address"));
+                user.setFullName(rs.getString("full_name"));
+                user.setRole(rs.getInt("role"));
+                
+                rs.close();
+                pstmt.close();
+                return user;
+            }
+            
+            rs.close();
+            pstmt.close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.severe("Error during authentication: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, 
+                "Terjadi kesalahan koneksi database!\n" + e.getMessage(), 
+                "Database Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return null;
+    }
+
+    private void redirectUserByRole(User user) {
+        switch (user.getRole()) {
+            case 0: // Admin
+                new ui.Homepage.HomepageAdmin().setVisible(true);
+                break;
+                
+            case 1: // Pegawai
+                new ui.Homepage.HomepagePegawai().setVisible(true);
+                break;
+                
+            case 2: // User biasa
+                new ui.Homepage.HomepageUser().setVisible(true);
+                break;
+                
+            default:
+                JOptionPane.showMessageDialog(this, 
+                    "Role tidak dikenali!", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     /**
      * @param args the command line arguments

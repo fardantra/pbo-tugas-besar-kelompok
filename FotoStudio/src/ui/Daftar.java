@@ -4,10 +4,15 @@
  */
 package ui;
 
+import db.Koneksi;
+import javax.swing.JOptionPane;
+import java.sql.*;
+
 /**
  *
  * @author Fardan
  */
+
 public class Daftar extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Daftar.class.getName());
@@ -17,6 +22,15 @@ public class Daftar extends javax.swing.JFrame {
      */
     public Daftar() {
         initComponents();
+        clearPlaceholders();
+    }
+    
+    private void clearPlaceholders() {
+        nameField.setText("");
+        alamatField.setText("");
+        emailField.setText("");
+        usernameField.setText("");
+        passwordField.setText("");
     }
 
     /**
@@ -206,11 +220,159 @@ public class Daftar extends javax.swing.JFrame {
     }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void daftarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_daftarButtonActionPerformed
-        // TODO add your handling code here:
+        String fullName = nameField.getText().trim();
+        String address = alamatField.getText().trim();
+        String email = emailField.getText().trim();
+        String username = usernameField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+        
+        if(fullName.isEmpty() || username.isEmpty() || password.isEmpty() || 
+            email.isEmpty() || address.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Semua field harus diisi!", 
+                "Validasi Gagal", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if(!email.contains("@") || !email.contains(".")) {
+            JOptionPane.showMessageDialog(this, 
+                "Format email tidak valid!\nContoh: user@example.com", 
+                "Validasi Gagal", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if(username.length() < 4) {
+            JOptionPane.showMessageDialog(this, 
+                "Username minimal 4 karakter!", 
+                "Validasi Gagal", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if(password.length() < 8) {
+            JOptionPane.showMessageDialog(this, 
+                "Password minimal 8 karakter!", 
+                "Validasi Gagal", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if(isUsernameExists(username)) {
+            JOptionPane.showMessageDialog(this, 
+                "Username sudah digunakan!\nSilakan pilih username lain.", 
+                "Username Tidak Tersedia", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if(isEmailExists(email)) {
+            JOptionPane.showMessageDialog(this, 
+                "Email sudah terdaftar!\nGunakan email lain atau login.", 
+                "Email Sudah Terdaftar", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if(registerUser(fullName, address, email, username, password)) {
+            JOptionPane.showMessageDialog(this, 
+                "Registrasi berhasil!\nSilakan login dengan akun Anda.", 
+                "Berhasil", 
+                JOptionPane.INFORMATION_MESSAGE);
+            
+            new Masuk().setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Registrasi gagal!\nTerjadi kesalahan pada sistem.\nSilakan coba lagi.", 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean isUsernameExists(String username) {
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "SELECT COUNT(*) FROM user WHERE username = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, username);
+            
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                rs.close();
+                pstmt.close();
+                return count > 0;
+            }
+            
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.severe("Error checking username: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private boolean isEmailExists(String email) {
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "SELECT COUNT(*) FROM user WHERE email = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, email);
+            
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                rs.close();
+                pstmt.close();
+                return count > 0;
+            }
+            
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.severe("Error checking email: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private boolean registerUser(String fullName, String address, String email, String username, String password) {
+        try {
+            Connection con = Koneksi.getConnection();
+            
+            String sql = "INSERT INTO user (username, password, email, address, full_name, role) " +
+                        "VALUES (?, ?, ?, ?, ?, 2)";
+            
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            pstmt.setString(3, email);
+            pstmt.setString(4, address);
+            pstmt.setString(5, fullName);
+            
+            int result = pstmt.executeUpdate();
+            pstmt.close();
+            
+            return result > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.severe("Error registering user: " + e.getMessage());
+            
+            JOptionPane.showMessageDialog(this, 
+                "Database error: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
     }//GEN-LAST:event_daftarButtonActionPerformed
 
     private void kembaliButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kembaliButtonActionPerformed
-        // TODO add your handling code here:
+        new Masuk().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_kembaliButtonActionPerformed
 
     /**

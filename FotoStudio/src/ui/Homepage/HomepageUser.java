@@ -4,6 +4,10 @@
  */
 package ui.Homepage;
 
+import javax.swing.JOptionPane;
+import model.User;
+import util.SessionManager;
+
 /**
  *
  * @author Fardan
@@ -17,6 +21,21 @@ public class HomepageUser extends javax.swing.JFrame {
      */
     public HomepageUser() {
         initComponents();
+
+        if (!SessionManager.getInstance().isLoggedIn()) {
+            JOptionPane.showMessageDialog(this, 
+                "Silakan login terlebih dahulu!", 
+                "Akses Ditolak", 
+                JOptionPane.WARNING_MESSAGE);
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+            return;
+        }
+        
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            usernameLabel.setText(currentUser.getFullName());
+        }
     }
 
     /**
@@ -166,19 +185,43 @@ public class HomepageUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void riwayatReservasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_riwayatReservasiButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.User.RiwayatReservasiUser().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_riwayatReservasiButtonActionPerformed
 
     private void buatReservasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buatReservasiButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.User.PilihPaket().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_buatReservasiButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Apakah Anda yakin ingin logout?", 
+            "Konfirmasi Logout", 
+            JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            SessionManager.getInstance().logout();
+            JOptionPane.showMessageDialog(this, 
+                "Logout berhasil!", 
+                "Berhasil", 
+                JOptionPane.INFORMATION_MESSAGE);
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Apakah Anda yakin ingin logout?", 
+            "Konfirmasi Logout", 
+            JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            SessionManager.getInstance().logout();
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**
