@@ -18,6 +18,19 @@ CREATE TABLE package (
     FOREIGN KEY (studio_id) REFERENCES studio(studio_id)
 );
 
+INSERT INTO package (studio_id, name, price, min_person, max_person, duration)
+VALUES (1, 'Paket Foto Basic', 15000, 1, 10, 60);
+
+INSERT INTO package (studio_id, name, price, min_person, max_person, duration)
+VALUES (1, 'Paket Foto Standard', 25000, 11, 30, 90);
+
+INSERT INTO package (studio_id, name, price, min_person, max_person, duration)
+VALUES (2, 'Paket Foto Premium', 40000, 31, 50, 120);
+INSERT INTO studio (capacity, status)
+VALUES (30, TRUE);
+INSERT INTO studio (capacity, status)
+VALUES (50, TRUE); 
+
 CREATE TABLE user (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -27,6 +40,10 @@ CREATE TABLE user (
     full_name VARCHAR(255) NOT NULL,
     role INT NOT NULL DEFAULT 2 -- Admin = 0, Pegawai = 1, User = 2
 );
+INSERT INTO user (username, password, email, address, full_name, role) VALUES ("admin", "admin", "admin@gmail", "Bandung", "Fardan (Admin)", 2);
+INSERT INTO user (username, password, email, address, full_name, role) VALUES ("pegawai", "pegawai", "pegawai@gmail", "Bandung", "Fardan (Pegawai)", 2);
+INSERT INTO user (username, password, email, address, full_name, role) VALUES ("user", "user", "user@gmail", "Bandung", "Fardan (User)", 2);
+
 
 CREATE TABLE reservation (
     reservation_id INT PRIMARY KEY AUTO_INCREMENT,

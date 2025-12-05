@@ -43,11 +43,21 @@ public class BuatReservasi extends javax.swing.JFrame {
     }
     
     private void setupDatePickers() {
+        Calendar now = Calendar.getInstance();
+        int currentYear = now.get(Calendar.YEAR);
+
         tahunComboBox.removeAllItems();
-        tahunComboBox.addItem("2025");
-        tahunComboBox.addItem("2026");
+        tahunComboBox.addItem(String.valueOf(currentYear));
+        tahunComboBox.addItem(String.valueOf(currentYear + 1));
+        
+        // Set default to today
+        tahunComboBox.setSelectedItem(String.valueOf(currentYear));
+        bulanComboBox.setSelectedIndex(now.get(Calendar.MONTH));
         
         updateDayComboBox();
+        
+        // Select current day
+        hariComboBox.setSelectedItem(String.valueOf(now.get(Calendar.DAY_OF_MONTH)));
         
         bulanComboBox.addActionListener(e -> updateDayComboBox());
         tahunComboBox.addActionListener(e -> updateDayComboBox());
@@ -79,6 +89,49 @@ public class BuatReservasi extends javax.swing.JFrame {
         menitComboBox.addItem("15");
         menitComboBox.addItem("30");
         menitComboBox.addItem("45");
+
+        // Logic to set default time to "nearest after real time"
+        Calendar now = Calendar.getInstance();
+        int hour = now.get(Calendar.HOUR_OF_DAY);
+        int minute = now.get(Calendar.MINUTE);
+        
+        int nextMinuteIndex = 0; // 00
+        
+        if (minute < 15) {
+            nextMinuteIndex = 1; // 15
+        } else if (minute < 30) {
+            nextMinuteIndex = 2; // 30
+        } else if (minute < 45) {
+            nextMinuteIndex = 3; // 45
+        } else {
+            // > 45, roll over to next hour
+            nextMinuteIndex = 0; // 00
+            hour++;
+        }
+
+        // Handle business hours (8 - 20)
+        if (hour < 8) {
+            hour = 8;
+            nextMinuteIndex = 0;
+        } else if (hour > 20) {
+            // If it's past 20:00, move to next day 08:00
+            now.add(Calendar.DAY_OF_MONTH, 1);
+            
+            // Update date pickers to tomorrow
+            tahunComboBox.setSelectedItem(String.valueOf(now.get(Calendar.YEAR)));
+            bulanComboBox.setSelectedIndex(now.get(Calendar.MONTH));
+            updateDayComboBox(); // Refresh days for new month/year
+            hariComboBox.setSelectedItem(String.valueOf(now.get(Calendar.DAY_OF_MONTH)));
+            
+            hour = 8;
+            nextMinuteIndex = 0;
+        }
+
+        String hourStr = String.format("%02d", hour);
+        if (hour >= 8 && hour <= 20) {
+            jamComboBox.setSelectedItem(hourStr);
+        }
+        menitComboBox.setSelectedIndex(nextMinuteIndex);
     }
 
     /**
@@ -319,6 +372,7 @@ public class BuatReservasi extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+
         try {
             int tahun = Integer.parseInt(tahunComboBox.getSelectedItem().toString());
             int bulan = bulanComboBox.getSelectedIndex() + 1;

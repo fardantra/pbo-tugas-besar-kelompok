@@ -367,11 +367,17 @@ public class KelolaReservasi extends javax.swing.JFrame {
     }
     
     private void setupYears() {
+        Calendar now = Calendar.getInstance();
+        int currentYear = now.get(Calendar.YEAR);
+        
         tahunComboBox.removeAllItems();
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 0; i < 5; i++) {
             tahunComboBox.addItem(String.valueOf(currentYear + i));
         }
+        tahunComboBox.setSelectedItem(String.valueOf(currentYear));
+        
+        // Set default month
+        bulanComboBox.setSelectedIndex(now.get(Calendar.MONTH));
     }
 
     private void setupTimes() {
@@ -385,6 +391,43 @@ public class KelolaReservasi extends javax.swing.JFrame {
         menitComboBox.addItem("15");
         menitComboBox.addItem("30");
         menitComboBox.addItem("45");
+        
+        // Default time logic
+        Calendar now = Calendar.getInstance();
+        int hour = now.get(Calendar.HOUR_OF_DAY);
+        int minute = now.get(Calendar.MINUTE);
+        
+        int nextMinuteIndex = 0;
+        
+        if (minute < 15) {
+            nextMinuteIndex = 1; 
+        } else if (minute < 30) {
+            nextMinuteIndex = 2; 
+        } else if (minute < 45) {
+            nextMinuteIndex = 3; 
+        } else {
+            nextMinuteIndex = 0; 
+            hour++;
+        }
+
+        if (hour < 8) {
+            hour = 8;
+            nextMinuteIndex = 0;
+        } else if (hour > 20) {
+            now.add(Calendar.DAY_OF_MONTH, 1);
+
+            tahunComboBox.setSelectedItem(String.valueOf(now.get(Calendar.YEAR)));
+            bulanComboBox.setSelectedIndex(now.get(Calendar.MONTH));
+            
+            hour = 8;
+            nextMinuteIndex = 0;
+        }
+
+        String hourStr = String.format("%02d", hour);
+        if (hour >= 8 && hour <= 20) {
+            jamComboBox.setSelectedItem(hourStr);
+        }
+        menitComboBox.setSelectedIndex(nextMinuteIndex);
     }
 
     private void updateDayBox() {
@@ -405,6 +448,11 @@ public class KelolaReservasi extends javax.swing.JFrame {
         
         for (int i = 1; i <= maxDay; i++) {
             hariComboBox.addItem(String.valueOf(i));
+        }
+        
+        Calendar now = Calendar.getInstance();
+        if (tahun == now.get(Calendar.YEAR) && bulan == now.get(Calendar.MONTH)) {
+             hariComboBox.setSelectedItem(String.valueOf(now.get(Calendar.DAY_OF_MONTH)));
         }
     }
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed

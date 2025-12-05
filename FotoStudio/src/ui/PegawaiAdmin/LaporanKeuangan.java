@@ -414,17 +414,31 @@ public class LaporanKeuangan extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setupYears() {
-        String[] years = {"2024", "2025", "2026", "2027"};
+        java.util.Calendar now = java.util.Calendar.getInstance();
+        int currentYear = now.get(java.util.Calendar.YEAR);
+        int currentMonth = now.get(java.util.Calendar.MONTH); // 0-11
         
         tahunHarianComboBox.removeAllItems();
         tahunMingguanComboBox.removeAllItems();
         tahunBulananComboBox.removeAllItems();
         
-        for (String y : years) {
+        // Generate years (e.g., 2 years back, 2 years forward)
+        for (int i = currentYear - 2; i <= currentYear + 2; i++) {
+            String y = String.valueOf(i);
             tahunHarianComboBox.addItem(y);
             tahunMingguanComboBox.addItem(y);
             tahunBulananComboBox.addItem(y);
         }
+        
+        // Set default year to current year
+        String currentYearStr = String.valueOf(currentYear);
+        tahunHarianComboBox.setSelectedItem(currentYearStr);
+        tahunMingguanComboBox.setSelectedItem(currentYearStr);
+        tahunBulananComboBox.setSelectedItem(currentYearStr);
+        
+        // Set default month to current month
+        bulanHarianComboBox.setSelectedIndex(currentMonth);
+        bulanMingguanComboBox.setSelectedIndex(currentMonth);
     }
 
     private void loadLaporanHarian() {

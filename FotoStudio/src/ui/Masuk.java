@@ -82,6 +82,11 @@ public class Masuk extends javax.swing.JFrame {
 
         usernameField.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         usernameField.setText("Enter Username");
+        usernameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usernameFieldActionPerformed(evt);
+            }
+        });
 
         passwordLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         passwordLabel.setText("Password");
@@ -89,9 +94,11 @@ public class Masuk extends javax.swing.JFrame {
         belumLabel.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         belumLabel.setText("Belum mempunyai akun?");
 
+        daftarButton.setBackground(new java.awt.Color(255, 255, 255));
         daftarButton.setFont(new java.awt.Font("Poppins SemiBold", 0, 12)); // NOI18N
         daftarButton.setText("Daftar");
         daftarButton.setBorder(null);
+        daftarButton.setBorderPainted(false);
         daftarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 daftarButtonActionPerformed(evt);
@@ -173,8 +180,14 @@ public class Masuk extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void daftarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_daftarButtonActionPerformed
-        // TODO add your handling code here:
+        Daftar daftar = new Daftar();
+        daftar.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_daftarButtonActionPerformed
+
+    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usernameFieldActionPerformed
 
     private void masukButtonActionPerformed(java.awt.event.ActionEvent evt) {                                            
         String username = usernameField.getText().trim();
@@ -276,22 +289,11 @@ public class Masuk extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Masuk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Masuk().setVisible(true));
