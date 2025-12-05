@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ui.PegawaiAdmin;
+import db.Koneksi;
+import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -85,7 +88,6 @@ public class EditPegawai extends javax.swing.JFrame {
         title1.setText("Bonas Studio");
 
         jTextField1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jTextField1.setText("Nama Lengkap");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -113,7 +115,6 @@ public class EditPegawai extends javax.swing.JFrame {
         jLabel1.setText("Nama Lengkap:");
 
         jTextField2.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jTextField2.setText("Alamat");
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
@@ -144,7 +145,6 @@ public class EditPegawai extends javax.swing.JFrame {
         jLabel6.setText("Email:");
 
         jTextField3.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jTextField3.setText("Email");
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
@@ -172,7 +172,6 @@ public class EditPegawai extends javax.swing.JFrame {
         jLabel2.setText("ID Pegawai:");
 
         jTextField10.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jTextField10.setText("ID");
         jTextField10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField10ActionPerformed(evt);
@@ -209,7 +208,6 @@ public class EditPegawai extends javax.swing.JFrame {
 
         jTextField4.setEditable(false);
         jTextField4.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jTextField4.setText("Username");
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField4ActionPerformed(evt);
@@ -237,7 +235,6 @@ public class EditPegawai extends javax.swing.JFrame {
         jLabel7.setText("Password:");
 
         jTextField5.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jTextField5.setText("Password");
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField5ActionPerformed(evt);
@@ -293,6 +290,11 @@ public class EditPegawai extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jButton1.setText("Cari");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -438,11 +440,34 @@ public class EditPegawai extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        model.User user = util.SessionManager.getInstance().getCurrentUser();
+
+        if (user.getRole() == 0) { 
+            new ui.Homepage.HomepageAdmin().setVisible(true);
+        } else { 
+            new ui.Homepage.HomepagePegawai().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void pilihButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pilihButton1ActionPerformed
-        // TODO add your handling code here:
+        String id = jTextField10.getText();
+        int confirm = JOptionPane.showConfirmDialog(this, "Hapus pegawai ini?", "Hapus", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                Connection con = Koneksi.getConnection();
+                String sql = "DELETE FROM user WHERE user_id = ?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setString(1, id);
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Pegawai dihapus.");
+
+                jTextField1.setText("");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_pilihButton1ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -470,8 +495,67 @@ public class EditPegawai extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField10ActionPerformed
 
     private void pilihButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pilihButton2ActionPerformed
-        // TODO add your handling code here:
+        String id = jTextField10.getText();
+    
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "UPDATE user SET full_name=?, address=?, email=?, password=?, role=? WHERE user_id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, jTextField1.getText());
+            ps.setString(2, jTextField2.getText());
+            ps.setString(3, jTextField3.getText());
+            ps.setString(4, jTextField5.getText());
+
+            int role = (jComboBox1.getSelectedIndex() == 1) ? 0 : 1;
+            ps.setInt(5, role);
+            ps.setString(6, id);
+
+            int result = ps.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(this, "Data Pegawai Berhasil Diupdate!");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Gagal Update: " + e.getMessage());
+        }
     }//GEN-LAST:event_pilihButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String keyword = jTextField10.getText().trim(); 
+        if (keyword.isEmpty()) return;
+
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "SELECT * FROM user WHERE (user_id = ? OR username = ?) AND role != 2"; 
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            try {
+                int id = Integer.parseInt(keyword);
+                ps.setInt(1, id);
+                ps.setString(2, ""); 
+            } catch (NumberFormatException e) {
+                ps.setInt(1, 0); 
+                ps.setString(2, keyword);
+            }
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                jTextField10.setText(String.valueOf(rs.getInt("user_id"))); 
+                jTextField1.setText(rs.getString("full_name"));
+                jTextField2.setText(rs.getString("address"));
+                jTextField3.setText(rs.getString("email"));
+                jTextField4.setText(rs.getString("username"));
+                jTextField5.setText(rs.getString("password")); 
+
+                int role = rs.getInt("role");
+                jComboBox1.setSelectedIndex(role == 0 ? 1 : 0); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Pegawai tidak ditemukan!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

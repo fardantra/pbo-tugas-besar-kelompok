@@ -4,6 +4,10 @@
  */
 package ui.Homepage;
 
+import javax.swing.JOptionPane;
+import model.User;
+import util.SessionManager;
+
 /**
  *
  * @author Fardan
@@ -17,6 +21,10 @@ public class HomepageAdmin extends javax.swing.JFrame {
      */
     public HomepageAdmin() {
         initComponents();
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            usernameLabel.setText(currentUser.getFullName());
+        }
     }
 
     /**
@@ -51,7 +59,6 @@ public class HomepageAdmin extends javax.swing.JFrame {
         logoLabel.setFont(new java.awt.Font("Retro Majestic Free", 0, 36)); // NOI18N
         logoLabel.setText("Bonas Studio");
 
-        kelolaReservasiButton.setBackground(new java.awt.Color(255, 255, 255));
         kelolaReservasiButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         kelolaReservasiButton.setText("Kelola Reservasi");
         kelolaReservasiButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -61,7 +68,6 @@ public class HomepageAdmin extends javax.swing.JFrame {
             }
         });
 
-        cekPembayaranButton.setBackground(new java.awt.Color(255, 255, 255));
         cekPembayaranButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         cekPembayaranButton.setText("Cek Pembayaran");
         cekPembayaranButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -71,7 +77,6 @@ public class HomepageAdmin extends javax.swing.JFrame {
             }
         });
 
-        riwayatReservasiButton.setBackground(new java.awt.Color(255, 255, 255));
         riwayatReservasiButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         riwayatReservasiButton.setText("Riwayat Reservasi");
         riwayatReservasiButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -81,22 +86,33 @@ public class HomepageAdmin extends javax.swing.JFrame {
             }
         });
 
-        tambahPegawaiButton.setBackground(new java.awt.Color(255, 255, 255));
         tambahPegawaiButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         tambahPegawaiButton.setText("Tambah Pegawai");
         tambahPegawaiButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        tambahPegawaiButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tambahPegawaiButtonActionPerformed(evt);
+            }
+        });
 
-        editPegawaiButton.setBackground(new java.awt.Color(255, 255, 255));
         editPegawaiButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         editPegawaiButton.setText("Edit Pegawai");
         editPegawaiButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        editPegawaiButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editPegawaiButtonActionPerformed(evt);
+            }
+        });
 
-        laporanKeuanganButton.setBackground(new java.awt.Color(255, 255, 255));
         laporanKeuanganButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         laporanKeuanganButton.setText("Laporan Keuangan");
         laporanKeuanganButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        laporanKeuanganButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                laporanKeuanganButtonActionPerformed(evt);
+            }
+        });
 
-        logoutButton.setBackground(new java.awt.Color(255, 255, 255));
         logoutButton.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         logoutButton.setText("Logout");
         logoutButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -224,24 +240,58 @@ public class HomepageAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cekPembayaranButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cekPembayaranButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.CekPembayaran().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_cekPembayaranButtonActionPerformed
 
     private void kelolaReservasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kelolaReservasiButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.KelolaReservasi().setVisible(true);
+        this.dispose(); 
     }//GEN-LAST:event_kelolaReservasiButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        // TODO add your handling code here:
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
+        "Yakin ingin logout?", "Konfirmasi", javax.swing.JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            util.SessionManager.getInstance().logout();
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Apakah Anda yakin ingin kembali?", 
+            "Kembali ke tampilan awal", 
+            JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            SessionManager.getInstance().logout();
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void riwayatReservasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_riwayatReservasiButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.RiwayatReservasi().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_riwayatReservasiButtonActionPerformed
+
+    private void tambahPegawaiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahPegawaiButtonActionPerformed
+        new ui.PegawaiAdmin.TambahPegawai().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_tambahPegawaiButtonActionPerformed
+
+    private void laporanKeuanganButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanKeuanganButtonActionPerformed
+        new ui.PegawaiAdmin.LaporanKeuangan().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_laporanKeuanganButtonActionPerformed
+
+    private void editPegawaiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPegawaiButtonActionPerformed
+        new ui.PegawaiAdmin.EditPegawai().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_editPegawaiButtonActionPerformed
 
     /**
      * @param args the command line arguments

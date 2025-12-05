@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ui.PegawaiAdmin;
+import db.Koneksi;
+import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -81,7 +84,6 @@ public class CekPembayaran extends javax.swing.JFrame {
 
         namaField.setEditable(false);
         namaField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        namaField.setText("Nama Lengkap");
         namaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 namaFieldActionPerformed(evt);
@@ -110,7 +112,6 @@ public class CekPembayaran extends javax.swing.JFrame {
 
         alamatField.setEditable(false);
         alamatField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        alamatField.setText("Alamat");
         alamatField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 alamatFieldActionPerformed(evt);
@@ -139,7 +140,6 @@ public class CekPembayaran extends javax.swing.JFrame {
 
         emailField.setEditable(false);
         emailField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        emailField.setText("Email");
         emailField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailFieldActionPerformed(evt);
@@ -169,7 +169,6 @@ public class CekPembayaran extends javax.swing.JFrame {
         paketField.setEditable(false);
         paketField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         paketField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        paketField.setText("0");
         paketField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 paketFieldActionPerformed(evt);
@@ -199,7 +198,6 @@ public class CekPembayaran extends javax.swing.JFrame {
         studioField.setEditable(false);
         studioField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         studioField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        studioField.setText("0");
         studioField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 studioFieldActionPerformed(evt);
@@ -229,7 +227,6 @@ public class CekPembayaran extends javax.swing.JFrame {
         jumlahField.setEditable(false);
         jumlahField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jumlahField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jumlahField.setText("0");
         jumlahField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jumlahFieldActionPerformed(evt);
@@ -265,7 +262,6 @@ public class CekPembayaran extends javax.swing.JFrame {
 
         totalHargaField.setEditable(false);
         totalHargaField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        totalHargaField.setText("Rp0");
         totalHargaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 totalHargaFieldActionPerformed(evt);
@@ -293,7 +289,6 @@ public class CekPembayaran extends javax.swing.JFrame {
         idReservasiLabel.setText("ID Reservasi:");
 
         idReservasiField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        idReservasiField.setText("ID");
         idReservasiField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idReservasiFieldActionPerformed(evt);
@@ -322,7 +317,6 @@ public class CekPembayaran extends javax.swing.JFrame {
 
         statusPembayaranField.setEditable(false);
         statusPembayaranField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        statusPembayaranField.setText("Sudah dibayar");
         statusPembayaranField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusPembayaranFieldActionPerformed(evt);
@@ -362,7 +356,6 @@ public class CekPembayaran extends javax.swing.JFrame {
             }
         });
 
-        cariButton.setBackground(new java.awt.Color(255, 255, 255));
         cariButton.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         cariButton.setText("Cari");
         cariButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -532,7 +525,14 @@ public class CekPembayaran extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        model.User user = util.SessionManager.getInstance().getCurrentUser();
+
+        if (user.getRole() == 0) { 
+            new ui.Homepage.HomepageAdmin().setVisible(true);
+        } else { 
+            new ui.Homepage.HomepagePegawai().setVisible(true);
+        }
+        this.dispose();        
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void namaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaFieldActionPerformed
@@ -568,11 +568,80 @@ public class CekPembayaran extends javax.swing.JFrame {
     }//GEN-LAST:event_totalHargaFieldActionPerformed
 
     private void terimaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terimaButtonActionPerformed
-        // TODO add your handling code here:
+        String idStr = idReservasiField.getText();
+    
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "UPDATE reservation SET status_payment = 'PAID', is_done = 1 WHERE reservation_id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idStr);
+
+            int updated = ps.executeUpdate();
+
+            if (updated > 0) {
+                JOptionPane.showMessageDialog(this, "Pembayaran Berhasil Dikonfirmasi!");
+                statusPembayaranField.setText("PAID");
+                terimaButton.setEnabled(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal mengupdate status.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_terimaButtonActionPerformed
 
     private void cariButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariButtonActionPerformed
-        // TODO add your handling code here:
+        String idStr = idReservasiField.getText().trim();
+    
+        if (idStr.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Masukkan ID Reservasi!");
+            return;
+        }
+
+        try {
+            java.sql.Connection con = db.Koneksi.getConnection();
+            
+            String sql = "SELECT r.*, u.full_name, u.address, u.email, " +
+                         "p.name as paket_nama, p.price as harga_satuan, p.studio_id " +
+                         "FROM reservation r " +
+                         "JOIN user u ON r.user_id = u.user_id " +
+                         "JOIN package p ON r.package_id = p.package_id " +
+                         "WHERE r.reservation_id = ?";
+
+            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idStr);
+            java.sql.ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                namaField.setText(rs.getString("full_name"));
+                alamatField.setText(rs.getString("address"));
+                emailField.setText(rs.getString("email"));
+                paketField.setText(rs.getString("paket_nama"));
+
+                studioField.setText(String.valueOf(rs.getInt("studio_id"))); 
+
+                int total = rs.getInt("total_price");
+                int hargaSatuan = rs.getInt("harga_satuan");
+                int jumlahOrang = (hargaSatuan > 0) ? (total / hargaSatuan) : 0;
+
+                jumlahField.setText(String.valueOf(jumlahOrang));
+                totalHargaField.setText("Rp " + String.format("%,d", total));
+                statusPembayaranField.setText(rs.getString("status_payment"));
+
+                if ("PENDING".equalsIgnoreCase(rs.getString("status_payment"))) {
+                    terimaButton.setEnabled(true);
+                } else {
+                    terimaButton.setEnabled(false);
+                }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Data tidak ditemukan!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_cariButtonActionPerformed
 
     private void statusPembayaranFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusPembayaranFieldActionPerformed
@@ -580,7 +649,14 @@ public class CekPembayaran extends javax.swing.JFrame {
     }//GEN-LAST:event_statusPembayaranFieldActionPerformed
 
     private void kembaliButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kembaliButtonActionPerformed
-        // TODO add your handling code here:
+        model.User user = util.SessionManager.getInstance().getCurrentUser();
+
+        if (user.getRole() == 0) { 
+            new ui.Homepage.HomepageAdmin().setVisible(true);
+        } else { 
+            new ui.Homepage.HomepagePegawai().setVisible(true);
+        }
+        this.dispose();   
     }//GEN-LAST:event_kembaliButtonActionPerformed
 
     /**

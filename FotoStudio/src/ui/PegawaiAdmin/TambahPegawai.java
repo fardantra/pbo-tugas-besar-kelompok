@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ui.PegawaiAdmin;
+import db.Koneksi;
+import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -80,7 +83,6 @@ public class TambahPegawai extends javax.swing.JFrame {
         judulLabel.setText("Tambah Pegawai");
 
         namaField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        namaField.setText("Nama Lengkap");
         namaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 namaFieldActionPerformed(evt);
@@ -108,7 +110,6 @@ public class TambahPegawai extends javax.swing.JFrame {
         namaLabel.setText("Nama Lengkap:");
 
         alamatField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        alamatField.setText("Alamat");
         alamatField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 alamatFieldActionPerformed(evt);
@@ -139,7 +140,6 @@ public class TambahPegawai extends javax.swing.JFrame {
         emailLabel.setText("Email:");
 
         emailField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        emailField.setText("Email");
         emailField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailFieldActionPerformed(evt);
@@ -175,7 +175,6 @@ public class TambahPegawai extends javax.swing.JFrame {
         usernameLabel.setText("Username:");
 
         usernameField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        usernameField.setText("Username");
         usernameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameFieldActionPerformed(evt);
@@ -203,7 +202,6 @@ public class TambahPegawai extends javax.swing.JFrame {
         passwordLabel.setText("Password:");
 
         passwordField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        passwordField.setText("Password");
         passwordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordFieldActionPerformed(evt);
@@ -369,11 +367,57 @@ public class TambahPegawai extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        model.User user = util.SessionManager.getInstance().getCurrentUser();
+
+        if (user.getRole() == 0) { 
+            new ui.Homepage.HomepageAdmin().setVisible(true);
+        } else { 
+            new ui.Homepage.HomepagePegawai().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void buatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buatButtonActionPerformed
-        // TODO add your handling code here:
+        String nama = namaField.getText();
+        String alamat = alamatField.getText();
+        String email = emailField.getText();
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        int role = (adminComboBox.getSelectedIndex() == 1) ? 0 : 1; 
+
+        if (nama.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua data harus diisi!");
+            return;
+        }
+
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "INSERT INTO user (full_name, address, email, username, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, nama);
+            ps.setString(2, alamat);
+            ps.setString(3, email);
+            ps.setString(4, username);
+            ps.setString(5, password); 
+            ps.setInt(6, role);
+
+            int result = ps.executeUpdate();
+
+            if (result > 0) {
+                JOptionPane.showMessageDialog(this, "Pegawai berhasil ditambahkan!");
+                namaField.setText("");
+                usernameField.setText("");
+            }
+
+        } catch (SQLException e) {
+            if (e.getMessage().contains("Duplicate")) {
+                JOptionPane.showMessageDialog(this, "Username atau Email sudah terdaftar!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_buatButtonActionPerformed
 
     private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed

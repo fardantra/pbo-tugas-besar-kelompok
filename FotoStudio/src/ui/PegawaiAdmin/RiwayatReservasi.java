@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ui.PegawaiAdmin;
-
+import db.Koneksi;
+import java.sql.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Fardan
@@ -17,6 +19,7 @@ public class RiwayatReservasi extends javax.swing.JFrame {
      */
     public RiwayatReservasi() {
         initComponents();
+        loadTable();
     }
 
     /**
@@ -180,16 +183,66 @@ public class RiwayatReservasi extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadTable() {
+       javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) riwayatTable.getModel();
+       model.setRowCount(0); 
+
+       try {
+           java.sql.Connection con = db.Koneksi.getConnection();
+
+           String sql = "SELECT r.reservation_id, r.reservation_date, " +
+                        "u.full_name, u.address, u.email, " +
+                        "p.name as paket_nama, p.studio_id, p.price as harga_satuan, " +
+                        "r.total_price, r.status_payment " +
+                        "FROM reservation r " +
+                        "JOIN user u ON r.user_id = u.user_id " +
+                        "JOIN package p ON r.package_id = p.package_id " +
+                        "ORDER BY r.created_at DESC";
+
+           java.sql.Statement st = con.createStatement();
+           java.sql.ResultSet rs = st.executeQuery(sql);
+
+           while(rs.next()) {
+               int total = rs.getInt("total_price");
+               int satuan = rs.getInt("harga_satuan");
+               int jumlah = (satuan > 0) ? (total / satuan) : 0;
+
+               model.addRow(new Object[]{
+                   rs.getInt("reservation_id"),
+                   rs.getDate("reservation_date"),
+                   rs.getString("full_name"),
+                   rs.getString("address"),
+                   rs.getString("email"),
+                   rs.getString("paket_nama"),
+                   rs.getInt("studio_id"),
+                   jumlah + " Orang",
+                   "Rp " + String.format("%,d", total),
+                   rs.getString("status_payment")
+               });
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    }
+    
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
+        loadTable();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        model.User user = util.SessionManager.getInstance().getCurrentUser();
+
+        if (user.getRole() == 0) { 
+            new ui.Homepage.HomepageAdmin().setVisible(true);
+        } else { 
+            new ui.Homepage.HomepagePegawai().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void cariReservasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariReservasiButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.CariReservasi().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_cariReservasiButtonActionPerformed
 
     /**

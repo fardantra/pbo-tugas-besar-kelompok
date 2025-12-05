@@ -4,6 +4,10 @@
  */
 package ui.Homepage;
 
+import javax.swing.JOptionPane;
+import model.User;
+import util.SessionManager;
+
 /**
  *
  * @author Fardan
@@ -17,6 +21,10 @@ public class HomepagePegawai extends javax.swing.JFrame {
      */
     public HomepagePegawai() {
         initComponents();
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            usernameLabel.setText(currentUser.getFullName());
+        }
     }
 
     /**
@@ -203,27 +211,47 @@ public class HomepagePegawai extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cekPembayaranButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cekPembayaranButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.CekPembayaran().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_cekPembayaranButtonActionPerformed
 
     private void kelolaReservasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kelolaReservasiButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.KelolaReservasi().setVisible(true);
+        this.dispose(); 
     }//GEN-LAST:event_kelolaReservasiButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        // TODO add your handling code here:
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
+        "Yakin ingin logout?", "Konfirmasi", javax.swing.JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            util.SessionManager.getInstance().logout();
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Apakah Anda yakin ingin kembali?", 
+            "Kembali ke tampilan awal", 
+            JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            SessionManager.getInstance().logout();
+            new ui.Masuk().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void riwayatReservasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_riwayatReservasiButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.RiwayatReservasi().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_riwayatReservasiButtonActionPerformed
 
     private void laporanKeuanganButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanKeuanganButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.LaporanKeuangan().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_laporanKeuanganButtonActionPerformed
 
     /**

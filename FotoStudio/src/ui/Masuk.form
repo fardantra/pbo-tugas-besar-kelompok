@@ -77,23 +77,21 @@
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="logoLabel" min="-2" pref="145" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                           <Component id="masukButton" min="-2" pref="87" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="passwordLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="passwordField" alignment="0" pref="340" max="32767" attributes="0"/>
-                              <Component id="masukLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="usernameLabel" min="-2" max="-2" attributes="0"/>
-                              <Component id="usernameField" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="belumLabel" min="-2" pref="156" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="daftarButton" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Component id="passwordLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="masukLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="usernameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="usernameField" alignment="0" pref="340" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="belumLabel" min="-2" pref="156" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                              <Component id="daftarButton" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="passwordField" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="30" max="32767" attributes="0"/>
+                  <EmptySpace pref="32" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -110,11 +108,11 @@
                   <Component id="usernameField" min="-2" pref="37" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="passwordLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                  <Component id="passwordField" min="-2" pref="37" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="passwordField" min="-2" pref="38" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="masukButton" min="-2" pref="35" max="-2" attributes="0"/>
-                  <EmptySpace pref="108" max="32767" attributes="0"/>
+                  <EmptySpace pref="133" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="belumLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="daftarButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -165,17 +163,6 @@
             <Property name="text" type="java.lang.String" value="Password"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="passwordField">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Poppins" size="14" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Enter Password"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="passwordFieldActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JLabel" name="belumLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -209,6 +196,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="masukButtonActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JPasswordField" name="passwordField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jPasswordField1"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

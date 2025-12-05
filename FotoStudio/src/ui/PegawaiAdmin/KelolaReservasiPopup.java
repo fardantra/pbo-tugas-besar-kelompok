@@ -11,12 +11,14 @@ package ui.PegawaiAdmin;
 public class KelolaReservasiPopup extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(KelolaReservasiPopup.class.getName());
-
+    private int currentReservationId;
     /**
      * Creates new form Login
      */
-    public KelolaReservasiPopup() {
+    public KelolaReservasiPopup(int resId) {
         initComponents();
+        this.currentReservationId = resId; 
+        loadDetailData(); 
     }
 
     /**
@@ -226,16 +228,62 @@ public class KelolaReservasiPopup extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadDetailData() {
+        try {
+            java.sql.Connection con = db.Koneksi.getConnection();
+            String sql = "SELECT r.*, u.full_name, u.address, u.email, p.name as paket, p.studio_id " +
+                         "FROM reservation r " +
+                         "JOIN user u ON r.user_id = u.user_id " +
+                         "JOIN package p ON r.package_id = p.package_id " +
+                         "WHERE r.reservation_id = ?";
+
+            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, currentReservationId);
+            java.sql.ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                namaIsiLabel.setText(rs.getString("full_name"));
+                alamatIsiLabel.setText(rs.getString("address"));
+                emailIsiLabel.setText(rs.getString("email"));
+                paketFotoIsiLabel.setText(rs.getString("paket"));
+                studioIsiLabel.setText("Studio " + rs.getInt("studio_id"));
+                totalHargaIsiLabel.setText("Rp " + rs.getInt("total_price"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void hapusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusButtonActionPerformed
-        // TODO add your handling code here:
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
+            "Hapus reservasi ini? (Status akan menjadi CANCELLED)", 
+            "Konfirmasi Hapus", javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            try {
+                java.sql.Connection con = db.Koneksi.getConnection();
+                String sql = "UPDATE reservation SET status_payment = 'CANCELLED' WHERE reservation_id = ?";
+                java.sql.PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, currentReservationId);
+                ps.executeUpdate();
+
+                javax.swing.JOptionPane.showMessageDialog(this, "Reservasi Dibatalkan.");
+                new ui.PegawaiAdmin.KelolaReservasi().setVisible(true);
+                this.dispose();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }        
     }//GEN-LAST:event_hapusButtonActionPerformed
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.KelolaReservasi().setVisible(true);
+        this.dispose(); 
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.KelolaReservasi().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
     /**
@@ -249,7 +297,11 @@ public class KelolaReservasiPopup extends javax.swing.JFrame {
         }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new KelolaReservasiPopup().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new KelolaReservasiPopup(0).setVisible(true); 
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

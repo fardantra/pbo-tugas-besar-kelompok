@@ -3,6 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ui.PegawaiAdmin;
+import javax.swing.table.DefaultTableModel;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.sql.*;
+import db.Koneksi;
+import javax.swing.JOptionPane;        
 
 /**
  *
@@ -17,6 +23,7 @@ public class LaporanKeuangan extends javax.swing.JFrame {
      */
     public LaporanKeuangan() {
         initComponents();
+        setupYears();
     }
 
     /**
@@ -406,16 +413,178 @@ public class LaporanKeuangan extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void setupYears() {
+        String[] years = {"2024", "2025", "2026", "2027"};
+        
+        tahunHarianComboBox.removeAllItems();
+        tahunMingguanComboBox.removeAllItems();
+        tahunBulananComboBox.removeAllItems();
+        
+        for (String y : years) {
+            tahunHarianComboBox.addItem(y);
+            tahunMingguanComboBox.addItem(y);
+            tahunBulananComboBox.addItem(y);
+        }
+    }
+
+    private void loadLaporanHarian() {
+        DefaultTableModel model = (DefaultTableModel) harianTable.getModel();
+        model.setRowCount(0);
+        
+        int bulan = bulanHarianComboBox.getSelectedIndex() + 1;
+        String tahun = (String) tahunHarianComboBox.getSelectedItem();
+        
+        try {
+            Connection con = Koneksi.getConnection();
+            
+            String sql = "SELECT reservation_date, SUM(total_price) as pendapatan " +
+                         "FROM reservation " +
+                         "WHERE MONTH(reservation_date) = ? AND YEAR(reservation_date) = ? " +
+                         "AND status_payment = 'PAID' " +
+                         "GROUP BY reservation_date ORDER BY reservation_date ASC";
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, bulan);
+            ps.setString(2, tahun);
+            ResultSet rs = ps.executeQuery();
+            
+            int no = 1;
+            double totalKeseluruhan = 0;
+            
+            while(rs.next()) {
+                double pendapatan = rs.getDouble("pendapatan");
+                totalKeseluruhan += pendapatan;
+                
+                model.addRow(new Object[]{
+                    no++,
+                    rs.getDate("reservation_date"), 
+                    formatRupiah(pendapatan)
+                });
+            }
+
+            model.addRow(new Object[]{"", "TOTAL", formatRupiah(totalKeseluruhan)});
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal memuat data Harian: " + e.getMessage());
+        }
+    }
+
+    private void loadLaporanMingguan() {
+        DefaultTableModel model = (DefaultTableModel) mingguanTable.getModel();
+        model.setRowCount(0);
+        
+        int bulan = bulanMingguanComboBox.getSelectedIndex() + 1;
+        String tahun = (String) tahunMingguanComboBox.getSelectedItem();
+        
+        try {
+            Connection con = Koneksi.getConnection();
+            
+            String sql = "SELECT WEEK(reservation_date, 1) - WEEK(DATE_SUB(reservation_date, INTERVAL DAYOFMONTH(reservation_date)-1 DAY), 1) + 1 AS minggu_ke, " +
+                         "SUM(total_price) as pendapatan " +
+                         "FROM reservation " +
+                         "WHERE MONTH(reservation_date) = ? AND YEAR(reservation_date) = ? " +
+                         "AND status_payment = 'PAID' " +
+                         "GROUP BY minggu_ke ORDER BY minggu_ke ASC";
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, bulan);
+            ps.setString(2, tahun);
+            ResultSet rs = ps.executeQuery();
+            
+            int no = 1;
+            double totalKeseluruhan = 0;
+            
+            while(rs.next()) {
+                double pendapatan = rs.getDouble("pendapatan");
+                totalKeseluruhan += pendapatan;
+                
+                model.addRow(new Object[]{
+                    no++,
+                    "Minggu ke-" + rs.getInt("minggu_ke"),
+                    formatRupiah(pendapatan)
+                });
+            }
+             model.addRow(new Object[]{"", "TOTAL", formatRupiah(totalKeseluruhan)});
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal memuat data Mingguan: " + e.getMessage());
+        }
+    }
+
+    private void loadLaporanBulanan() {
+        DefaultTableModel model = (DefaultTableModel) bulananTable.getModel();
+        model.setRowCount(0);
+        
+        String tahun = (String) tahunBulananComboBox.getSelectedItem();
+        
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "SELECT MONTH(reservation_date) as bulan_angka, SUM(total_price) as pendapatan " +
+                         "FROM reservation " +
+                         "WHERE YEAR(reservation_date) = ? " +
+                         "AND status_payment = 'PAID' " +
+                         "GROUP BY bulan_angka ORDER BY bulan_angka ASC";
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, tahun);
+            ResultSet rs = ps.executeQuery();
+            
+            int no = 1;
+            double totalKeseluruhan = 0;
+            String[] namaBulan = {"Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+                                  "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
+            
+            while(rs.next()) {
+                double pendapatan = rs.getDouble("pendapatan");
+                totalKeseluruhan += pendapatan;
+                int idxBulan = rs.getInt("bulan_angka") - 1; 
+                
+                model.addRow(new Object[]{
+                    no++,
+                    namaBulan[idxBulan],
+                    formatRupiah(pendapatan)
+                });
+            }
+             model.addRow(new Object[]{"", "TOTAL", formatRupiah(totalKeseluruhan)});
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal memuat data Bulanan: " + e.getMessage());
+        }
+    }
+    
+    private String formatRupiah(double number) {
+        NumberFormat formatKurensi = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+        return formatKurensi.format(number);
+    }
+    
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
+        int selectedIndex = laporanTabbedPane.getSelectedIndex();
+        // Panggil fungsi load sesuai tab
+        if (selectedIndex == 0) {
+            loadLaporanHarian();
+        } else if (selectedIndex == 1) {
+            loadLaporanMingguan();
+        } else if (selectedIndex == 2) {
+            loadLaporanBulanan();
+        }
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        model.User user = util.SessionManager.getInstance().getCurrentUser();
+
+        if (user.getRole() == 0) { 
+            new ui.Homepage.HomepageAdmin().setVisible(true);
+        } else { 
+            new ui.Homepage.HomepagePegawai().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void bulanHarianComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulanHarianComboBoxActionPerformed
-        //        updateDayBox();
+        // TODO add your handling code here:
     }//GEN-LAST:event_bulanHarianComboBoxActionPerformed
 
     private void tahunHarianComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tahunHarianComboBoxActionPerformed

@@ -9,7 +9,7 @@ CREATE TABLE studio (
 
 CREATE TABLE package (
     package_id INT PRIMARY KEY AUTO_INCREMENT,
-    studio_id NOT NULL,
+    studio_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     price INT NOT NULL,
     min_person INT NOT NULL,

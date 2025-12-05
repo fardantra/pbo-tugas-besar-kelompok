@@ -4,6 +4,13 @@
  */
 package ui.PegawaiAdmin;
 
+import db.Koneksi;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Fardan
@@ -95,7 +102,6 @@ public class CariReservasi extends javax.swing.JFrame {
 
         namaField.setEditable(false);
         namaField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        namaField.setText("Nama Lengkap");
         namaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 namaFieldActionPerformed(evt);
@@ -124,7 +130,6 @@ public class CariReservasi extends javax.swing.JFrame {
 
         alamatField.setEditable(false);
         alamatField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        alamatField.setText("Alamat");
         alamatField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 alamatFieldActionPerformed(evt);
@@ -153,7 +158,6 @@ public class CariReservasi extends javax.swing.JFrame {
 
         emailField.setEditable(false);
         emailField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        emailField.setText("Email");
         emailField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailFieldActionPerformed(evt);
@@ -183,7 +187,6 @@ public class CariReservasi extends javax.swing.JFrame {
         paketField.setEditable(false);
         paketField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         paketField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        paketField.setText("0");
         paketField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 paketFieldActionPerformed(evt);
@@ -213,7 +216,6 @@ public class CariReservasi extends javax.swing.JFrame {
         studioField.setEditable(false);
         studioField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         studioField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        studioField.setText("0");
         studioField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 studioFieldActionPerformed(evt);
@@ -243,7 +245,6 @@ public class CariReservasi extends javax.swing.JFrame {
         jumlahField.setEditable(false);
         jumlahField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jumlahField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jumlahField.setText("0");
         jumlahField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jumlahFieldActionPerformed(evt);
@@ -279,7 +280,6 @@ public class CariReservasi extends javax.swing.JFrame {
 
         totalHargaField.setEditable(false);
         totalHargaField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        totalHargaField.setText("Rp0");
         totalHargaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 totalHargaFieldActionPerformed(evt);
@@ -307,7 +307,6 @@ public class CariReservasi extends javax.swing.JFrame {
         idReservasiLabel.setText("ID Reservasi:");
 
         idReservasiField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        idReservasiField.setText("ID");
         idReservasiField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idReservasiFieldActionPerformed(evt);
@@ -336,7 +335,6 @@ public class CariReservasi extends javax.swing.JFrame {
 
         statusPembayaranField.setEditable(false);
         statusPembayaranField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        statusPembayaranField.setText("Selesai");
         statusPembayaranField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusPembayaranFieldActionPerformed(evt);
@@ -368,7 +366,6 @@ public class CariReservasi extends javax.swing.JFrame {
             }
         });
 
-        cariButton.setBackground(new java.awt.Color(255, 255, 255));
         cariButton.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         cariButton.setText("Cari");
         cariButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -534,7 +531,14 @@ public class CariReservasi extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        model.User user = util.SessionManager.getInstance().getCurrentUser();
+
+        if (user.getRole() == 0) { 
+            new ui.Homepage.HomepageAdmin().setVisible(true);
+        } else { 
+            new ui.Homepage.HomepagePegawai().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void namaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaFieldActionPerformed
@@ -570,11 +574,49 @@ public class CariReservasi extends javax.swing.JFrame {
     }//GEN-LAST:event_totalHargaFieldActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
+        new ui.PegawaiAdmin.RiwayatReservasi().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cariButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariButtonActionPerformed
-        // TODO add your handling code here:
+        String idStr = idReservasiField.getText().trim();
+        if (idStr.isEmpty()) return;
+
+        try {
+            java.sql.Connection con = db.Koneksi.getConnection();
+
+            String sql = "SELECT r.*, u.full_name, u.address, u.email, " +
+                         "p.name as paket_nama, p.price as harga_satuan, p.studio_id " +
+                         "FROM reservation r " +
+                         "JOIN user u ON r.user_id = u.user_id " +
+                         "JOIN package p ON r.package_id = p.package_id " +
+                         "WHERE r.reservation_id = ?";
+
+            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idStr);
+            java.sql.ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                namaField.setText(rs.getString("full_name"));
+                alamatField.setText(rs.getString("address"));
+                emailField.setText(rs.getString("email"));
+                paketField.setText(rs.getString("paket_nama"));
+                studioField.setText(String.valueOf(rs.getInt("studio_id")));
+
+                int total = rs.getInt("total_price");
+                int satuan = rs.getInt("harga_satuan");
+                int jumlah = (satuan > 0) ? (total / satuan) : 0;
+
+                jumlahField.setText(String.valueOf(jumlah));
+                totalHargaField.setText("Rp " + String.format("%,d", total));
+                statusPembayaranField.setText(rs.getString("status_payment"));
+
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Data tidak ditemukan!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_cariButtonActionPerformed
 
     private void statusPembayaranFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusPembayaranFieldActionPerformed

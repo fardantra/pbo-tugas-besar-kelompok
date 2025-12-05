@@ -3,7 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ui.PegawaiAdmin;
-
+import java.sql.*;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
+import db.Koneksi;
 /**
  *
  * @author Fardan
@@ -11,12 +14,19 @@ package ui.PegawaiAdmin;
 public class KelolaReservasi extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(KelolaReservasi.class.getName());
-
+    private int idResSlot1 = 0; 
+    private int idResSlot2 = 0;
     /**
      * Creates new form Login
      */
     public KelolaReservasi() {
         initComponents();
+        setupYears();      
+        setupTimes();       
+        updateDayBox();    
+
+        tahunComboBox.addActionListener(e -> updateDayBox());
+        // --------------------------
     }
 
     /**
@@ -134,9 +144,19 @@ public class KelolaReservasi extends javax.swing.JFrame {
 
         hariComboBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         hariComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Day" }));
+        hariComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hariComboBoxActionPerformed(evt);
+            }
+        });
 
         tahunComboBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         tahunComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Year" }));
+        tahunComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tahunComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout tanggalPanelLayout = new javax.swing.GroupLayout(tanggalPanel);
         tanggalPanel.setLayout(tanggalPanelLayout);
@@ -167,9 +187,19 @@ public class KelolaReservasi extends javax.swing.JFrame {
 
         jamComboBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jamComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "10" }));
+        jamComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jamComboBoxActionPerformed(evt);
+            }
+        });
 
         menitComboBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         menitComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "10" }));
+        menitComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menitComboBoxActionPerformed(evt);
+            }
+        });
 
         titikDuaLabel.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
         titikDuaLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -292,25 +322,190 @@ public class KelolaReservasi extends javax.swing.JFrame {
         setBounds(0, 0, 816, 639);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void checkAvailability() {
+        String tgl = (String) hariComboBox.getSelectedItem();
+        String bln = String.valueOf(bulanComboBox.getSelectedIndex() + 1); // 1-12
+        String thn = (String) tahunComboBox.getSelectedItem();
+        String jam = (String) jamComboBox.getSelectedItem();
+        String menit = (String) menitComboBox.getSelectedItem();
+
+        if (tgl == null || tgl.equals("Day") || thn.equals("Year")) return;
+
+        String dateStr = thn + "-" + bln + "-" + tgl;
+        String timeStr = jam + ":" + menit + ":00";
+
+        slot1Button.setBackground(java.awt.Color.GREEN);
+        slot2Button.setBackground(java.awt.Color.GREEN);
+        slot1Button.setEnabled(true);
+        slot2Button.setEnabled(true);
+
+        try {
+            Connection con = Koneksi.getConnection();
+            String sql = "SELECT p.studio_id FROM reservation r " +
+                         "JOIN package p ON r.package_id = p.package_id " +
+                         "WHERE r.reservation_date = ? AND r.reservation_time = ? " +
+                         "AND r.status_payment != 'CANCELLED'";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, dateStr);
+            ps.setString(2, timeStr);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int bookedStudio = rs.getInt("studio_id");
+                if (bookedStudio == 1) {
+                    slot1Button.setBackground(java.awt.Color.RED); 
+                    slot1Button.setEnabled(false); 
+                } else if (bookedStudio == 2) {
+                    slot2Button.setBackground(java.awt.Color.RED);
+                    slot2Button.setEnabled(false);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void setupYears() {
+        tahunComboBox.removeAllItems();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = 0; i < 5; i++) {
+            tahunComboBox.addItem(String.valueOf(currentYear + i));
+        }
+    }
+
+    private void setupTimes() {
+        jamComboBox.removeAllItems();
+        for (int i = 8; i <= 20; i++) {
+            jamComboBox.addItem(String.format("%02d", i));
+        }
+        
+        menitComboBox.removeAllItems();
+        menitComboBox.addItem("00");
+        menitComboBox.addItem("15");
+        menitComboBox.addItem("30");
+        menitComboBox.addItem("45");
+    }
+
+    private void updateDayBox() {
+        hariComboBox.removeAllItems();
+        
+        int bulan = bulanComboBox.getSelectedIndex(); 
+        Object tahunObj = tahunComboBox.getSelectedItem();
+        
+        if (tahunObj == null) return;
+        
+        int tahun = Integer.parseInt(tahunObj.toString());
+        
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, tahun);
+        cal.set(Calendar.MONTH, bulan);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        
+        for (int i = 1; i <= maxDay; i++) {
+            hariComboBox.addItem(String.valueOf(i));
+        }
+    }
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
+        slot1Button.setBackground(java.awt.Color.GREEN);
+        slot2Button.setBackground(java.awt.Color.GREEN);
+        slot1Button.setEnabled(true);
+        slot2Button.setEnabled(true);
+        idResSlot1 = 0;
+        idResSlot2 = 0;
+
+        String tgl = (String) hariComboBox.getSelectedItem();
+        String bln = String.valueOf(bulanComboBox.getSelectedIndex() + 1);
+        String thn = (String) tahunComboBox.getSelectedItem();
+        String jam = (String) jamComboBox.getSelectedItem();
+        String menit = (String) menitComboBox.getSelectedItem();
+
+        if ("Day".equals(tgl) || "Year".equals(thn)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Pilih tanggal dengan benar!");
+            return;
+        }
+
+        String dateStr = thn + "-" + bln + "-" + tgl;
+        String timeStr = jam + ":" + menit + ":00";
+
+        try {
+            java.sql.Connection con = db.Koneksi.getConnection();
+            String sql = "SELECT r.reservation_id, p.studio_id FROM reservation r " +
+                         "JOIN package p ON r.package_id = p.package_id " +
+                         "WHERE r.reservation_date = ? AND r.reservation_time = ? " +
+                         "AND r.status_payment != 'CANCELLED'"; 
+
+            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, dateStr);
+            ps.setString(2, timeStr);
+            java.sql.ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int studio = rs.getInt("studio_id");
+                int resId = rs.getInt("reservation_id");
+
+                if (studio == 1) {
+                    slot1Button.setBackground(java.awt.Color.RED); 
+                    idResSlot1 = resId; 
+                } else if (studio == 2) {
+                    slot2Button.setBackground(java.awt.Color.RED); 
+                    idResSlot2 = resId; 
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void slot1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slot1ButtonActionPerformed
-        // TODO add your handling code here:
+        if (idResSlot1 != 0) {
+        new ui.PegawaiAdmin.KelolaReservasiPopup(idResSlot1).setVisible(true);
+        this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Slot Kosong (Available)");
+        }
     }//GEN-LAST:event_slot1ButtonActionPerformed
 
     private void slot2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slot2ButtonActionPerformed
-        // TODO add your handling code here:
+        if (idResSlot2 != 0) {
+        new ui.PegawaiAdmin.KelolaReservasiPopup(idResSlot2).setVisible(true);
+        this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Slot Kosong (Available)");
+        }
     }//GEN-LAST:event_slot2ButtonActionPerformed
 
     private void bulanComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulanComboBoxActionPerformed
-//        updateDayBox();
+        updateDayBox();
     }//GEN-LAST:event_bulanComboBoxActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        model.User user = util.SessionManager.getInstance().getCurrentUser();
+
+        if (user.getRole() == 0) { 
+            new ui.Homepage.HomepageAdmin().setVisible(true);
+        } else { 
+            new ui.Homepage.HomepagePegawai().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void hariComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hariComboBoxActionPerformed
+        checkAvailability();
+    }//GEN-LAST:event_hariComboBoxActionPerformed
+
+    private void tahunComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tahunComboBoxActionPerformed
+        checkAvailability();        
+    }//GEN-LAST:event_tahunComboBoxActionPerformed
+
+    private void jamComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jamComboBoxActionPerformed
+        checkAvailability();
+    }//GEN-LAST:event_jamComboBoxActionPerformed
+
+    private void menitComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menitComboBoxActionPerformed
+        checkAvailability();
+    }//GEN-LAST:event_menitComboBoxActionPerformed
 
     /**
      * @param args the command line arguments

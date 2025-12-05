@@ -48,10 +48,10 @@ public class Masuk extends javax.swing.JFrame {
         usernameLabel = new javax.swing.JLabel();
         usernameField = new javax.swing.JTextField();
         passwordLabel = new javax.swing.JLabel();
-        passwordField = new javax.swing.JTextField();
         belumLabel = new javax.swing.JLabel();
         daftarButton = new javax.swing.JButton();
         masukButton = new javax.swing.JButton();
+        passwordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -86,18 +86,9 @@ public class Masuk extends javax.swing.JFrame {
         passwordLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         passwordLabel.setText("Password");
 
-        passwordField.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        passwordField.setText("Enter Password");
-        passwordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordFieldActionPerformed(evt);
-            }
-        });
-
         belumLabel.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         belumLabel.setText("Belum mempunyai akun?");
 
-        daftarButton.setBackground(new java.awt.Color(255, 255, 255));
         daftarButton.setFont(new java.awt.Font("Poppins SemiBold", 0, 12)); // NOI18N
         daftarButton.setText("Daftar");
         daftarButton.setBorder(null);
@@ -107,7 +98,6 @@ public class Masuk extends javax.swing.JFrame {
             }
         });
 
-        masukButton.setBackground(new java.awt.Color(255, 255, 255));
         masukButton.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         masukButton.setText("Masuk");
         masukButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -117,6 +107,8 @@ public class Masuk extends javax.swing.JFrame {
             }
         });
 
+        passwordField.setText("jPasswordField1");
+
         javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
         rightPanel.setLayout(rightPanelLayout);
         rightPanelLayout.setHorizontalGroup(
@@ -125,19 +117,18 @@ public class Masuk extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(masukButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(passwordLabel)
-                            .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
-                            .addComponent(masukLabel)
-                            .addComponent(usernameLabel)
-                            .addComponent(usernameField)
-                            .addGroup(rightPanelLayout.createSequentialGroup()
-                                .addComponent(belumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(daftarButton)))))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addComponent(passwordLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(masukLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(usernameLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(usernameField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, rightPanelLayout.createSequentialGroup()
+                            .addComponent(belumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, 0)
+                            .addComponent(daftarButton))
+                        .addComponent(passwordField, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         rightPanelLayout.setVerticalGroup(
             rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,11 +143,11 @@ public class Masuk extends javax.swing.JFrame {
                 .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(passwordLabel)
-                .addGap(1, 1, 1)
-                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(masukButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
                 .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(belumLabel)
                     .addComponent(daftarButton))
@@ -180,10 +171,6 @@ public class Masuk extends javax.swing.JFrame {
 
         setBounds(0, 0, 816, 639);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void daftarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_daftarButtonActionPerformed
         // TODO add your handling code here:
@@ -317,7 +304,7 @@ public class Masuk extends javax.swing.JFrame {
     private javax.swing.JLabel logoLabel;
     private javax.swing.JButton masukButton;
     private javax.swing.JLabel masukLabel;
-    private javax.swing.JTextField passwordField;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JTextField usernameField;
