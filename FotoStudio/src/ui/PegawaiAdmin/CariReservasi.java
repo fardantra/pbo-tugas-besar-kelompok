@@ -70,6 +70,12 @@ public class CariReservasi extends javax.swing.JFrame {
         statusPembayaranField = new javax.swing.JTextField();
         okButton = new javax.swing.JButton();
         cariButton = new javax.swing.JButton();
+        tglReservasiLabel = new javax.swing.JLabel();
+        tglReservasiPanel = new javax.swing.JPanel();
+        tglReservasiField = new javax.swing.JTextField();
+        jamReservasiLabel = new javax.swing.JLabel();
+        jamReservasiPanel = new javax.swing.JPanel();
+        jamReservasiField = new javax.swing.JTextField();
         navbarPanel = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
 
@@ -199,8 +205,8 @@ public class CariReservasi extends javax.swing.JFrame {
             paketPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(paketPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(paketField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10))
+                .addComponent(paketField)
+                .addContainerGap())
         );
         paketPanelLayout.setVerticalGroup(
             paketPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,7 +221,6 @@ public class CariReservasi extends javax.swing.JFrame {
 
         studioField.setEditable(false);
         studioField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        studioField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         studioField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 studioFieldActionPerformed(evt);
@@ -228,8 +233,8 @@ public class CariReservasi extends javax.swing.JFrame {
             studioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(studioPanelLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(studioField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10))
+                .addComponent(studioField)
+                .addContainerGap())
         );
         studioPanelLayout.setVerticalGroup(
             studioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,11 +264,11 @@ public class CariReservasi extends javax.swing.JFrame {
         jumlahPanelLayout.setHorizontalGroup(
             jumlahPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jumlahPanelLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jumlahField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jumlahField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jumlahOrangLabel)
-                .addGap(10, 10, 10))
+                .addGap(28, 28, 28))
         );
         jumlahPanelLayout.setVerticalGroup(
             jumlahPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,7 +297,7 @@ public class CariReservasi extends javax.swing.JFrame {
             totalHargaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(totalHargaPanelLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(totalHargaField, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                .addComponent(totalHargaField, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                 .addGap(10, 10, 10))
         );
         totalHargaPanelLayout.setVerticalGroup(
@@ -347,7 +352,7 @@ public class CariReservasi extends javax.swing.JFrame {
             statusPembayaranPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(statusPembayaranPanelLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(statusPembayaranField, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                .addComponent(statusPembayaranField)
                 .addGap(10, 10, 10))
         );
         statusPembayaranPanelLayout.setVerticalGroup(
@@ -375,6 +380,62 @@ public class CariReservasi extends javax.swing.JFrame {
             }
         });
 
+        tglReservasiLabel.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        tglReservasiLabel.setText("Tgl. Reservasi:");
+
+        tglReservasiField.setEditable(false);
+        tglReservasiField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        tglReservasiField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tglReservasiFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout tglReservasiPanelLayout = new javax.swing.GroupLayout(tglReservasiPanel);
+        tglReservasiPanel.setLayout(tglReservasiPanelLayout);
+        tglReservasiPanelLayout.setHorizontalGroup(
+            tglReservasiPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tglReservasiPanelLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(tglReservasiField, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
+        );
+        tglReservasiPanelLayout.setVerticalGroup(
+            tglReservasiPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tglReservasiPanelLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(tglReservasiField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10))
+        );
+
+        jamReservasiLabel.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        jamReservasiLabel.setText("Jam Reservasi:");
+
+        jamReservasiField.setEditable(false);
+        jamReservasiField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jamReservasiField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jamReservasiFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jamReservasiPanelLayout = new javax.swing.GroupLayout(jamReservasiPanel);
+        jamReservasiPanel.setLayout(jamReservasiPanelLayout);
+        jamReservasiPanelLayout.setHorizontalGroup(
+            jamReservasiPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jamReservasiPanelLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jamReservasiField, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
+        );
+        jamReservasiPanelLayout.setVerticalGroup(
+            jamReservasiPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jamReservasiPanelLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jamReservasiField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10))
+        );
+
         javax.swing.GroupLayout bodyPanelLayout = new javax.swing.GroupLayout(bodyPanel);
         bodyPanel.setLayout(bodyPanelLayout);
         bodyPanelLayout.setHorizontalGroup(
@@ -387,42 +448,51 @@ public class CariReservasi extends javax.swing.JFrame {
                             .addComponent(idReservasiLabel)
                             .addComponent(logoLabel)
                             .addComponent(judulLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addContainerGap(423, Short.MAX_VALUE))
                     .addGroup(bodyPanelLayout.createSequentialGroup()
                         .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(emailLabel)
-                            .addComponent(emailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bodyPanelLayout.createSequentialGroup()
-                        .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(bodyPanelLayout.createSequentialGroup()
+                                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(emailLabel)
+                                    .addComponent(emailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(statusPembayaranLabel)
+                                    .addComponent(statusPembayaranPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bodyPanelLayout.createSequentialGroup()
                                 .addComponent(idReservasiPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(cariButton, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, bodyPanelLayout.createSequentialGroup()
+                                .addComponent(cariButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(bodyPanelLayout.createSequentialGroup()
                                 .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(alamatLabel)
                                     .addComponent(namaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(alamatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(namaLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(paketLabel)
-                                    .addComponent(paketPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(studioPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(studioLabel)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bodyPanelLayout.createSequentialGroup()
-                                        .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(studioPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(studioLabel))
-                                        .addGap(2, 2, 2)))))
-                        .addGap(42, 42, 42)))
-                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(statusPembayaranLabel)
-                    .addComponent(statusPembayaranPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(totalHargaLabel)
-                    .addComponent(totalHargaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jumlahLabel)
-                    .addComponent(jumlahPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(170, 170, 170))
+                                        .addComponent(jumlahLabel)
+                                        .addGap(51, 51, 51))
+                                    .addComponent(jumlahPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                        .addGap(18, 18, 18)
+                        .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(tglReservasiLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tglReservasiPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(bodyPanelLayout.createSequentialGroup()
+                                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jamReservasiLabel)
+                                    .addComponent(jamReservasiPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(totalHargaLabel)
+                                    .addComponent(totalHargaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(paketLabel)
+                            .addComponent(paketPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(55, 55, 55))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bodyPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -435,51 +505,67 @@ public class CariReservasi extends javax.swing.JFrame {
                 .addComponent(logoLabel)
                 .addGap(0, 0, 0)
                 .addComponent(judulLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addComponent(idReservasiLabel)
                 .addGap(3, 3, 3)
                 .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cariButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(idReservasiPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(13, 13, 13)
-                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(bodyPanelLayout.createSequentialGroup()
-                        .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(paketLabel)
+                        .addGap(3, 3, 3)
+                        .addComponent(paketPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(bodyPanelLayout.createSequentialGroup()
                                 .addComponent(namaLabel)
                                 .addGap(3, 3, 3)
-                                .addComponent(namaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(13, 13, 13)
-                                .addComponent(alamatLabel)
-                                .addGap(3, 3, 3)
-                                .addComponent(alamatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(namaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(bodyPanelLayout.createSequentialGroup()
-                                .addComponent(paketLabel)
-                                .addGap(2, 2, 2)
-                                .addComponent(paketPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(studioLabel)
-                                .addGap(3, 3, 3)
-                                .addComponent(studioPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jumlahLabel)
+                                .addGap(48, 48, 48)))
+                        .addGroup(bodyPanelLayout.createSequentialGroup()
+                            .addGap(25, 25, 25)
+                            .addComponent(jumlahPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(bodyPanelLayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(alamatLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(studioLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(3, 3, 3)
+                        .addComponent(alamatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(13, 13, 13)
                         .addComponent(emailLabel)
                         .addGap(3, 3, 3)
-                        .addComponent(emailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(emailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 2, Short.MAX_VALUE))
                     .addGroup(bodyPanelLayout.createSequentialGroup()
-                        .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jumlahPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(bodyPanelLayout.createSequentialGroup()
-                                .addComponent(jumlahLabel)
-                                .addGap(47, 47, 47)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(totalHargaLabel)
-                        .addGap(2, 2, 2)
-                        .addComponent(totalHargaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(statusPembayaranLabel)
-                        .addGap(2, 2, 2)
-                        .addComponent(statusPembayaranPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(61, 61, 61)
+                                .addComponent(tglReservasiLabel)
+                                .addGap(2, 2, 2)
+                                .addComponent(tglReservasiPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jamReservasiLabel)
+                                .addGap(2, 2, 2)
+                                .addComponent(jamReservasiPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(bodyPanelLayout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(studioPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(statusPembayaranLabel)
+                                .addGap(2, 2, 2)
+                                .addComponent(statusPembayaranPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(bodyPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(totalHargaLabel)
+                                .addGap(2, 2, 2)
+                                .addComponent(totalHargaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(61, 75, Short.MAX_VALUE)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
@@ -603,6 +689,8 @@ public class CariReservasi extends javax.swing.JFrame {
                 emailField.setText(rs.getString("email"));
                 paketField.setText(rs.getString("paket_nama"));
                 studioField.setText(String.valueOf(rs.getInt("studio_id")));
+                jamReservasiField.setText(rs.getString("reservation_time"));
+                tglReservasiField.setText(rs.getString("reservation_date"));
 
                 int total = rs.getInt("total_price");
                 int satuan = rs.getInt("harga_satuan");
@@ -623,6 +711,14 @@ public class CariReservasi extends javax.swing.JFrame {
     private void statusPembayaranFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusPembayaranFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_statusPembayaranFieldActionPerformed
+
+    private void tglReservasiFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglReservasiFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tglReservasiFieldActionPerformed
+
+    private void jamReservasiFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jamReservasiFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jamReservasiFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -653,6 +749,9 @@ public class CariReservasi extends javax.swing.JFrame {
     private javax.swing.JPanel idReservasiPanel;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jamReservasiField;
+    private javax.swing.JLabel jamReservasiLabel;
+    private javax.swing.JPanel jamReservasiPanel;
     private javax.swing.JLabel judulLabel;
     private javax.swing.JTextField jumlahField;
     private javax.swing.JLabel jumlahLabel;
@@ -673,6 +772,9 @@ public class CariReservasi extends javax.swing.JFrame {
     private javax.swing.JTextField studioField;
     private javax.swing.JLabel studioLabel;
     private javax.swing.JPanel studioPanel;
+    private javax.swing.JTextField tglReservasiField;
+    private javax.swing.JLabel tglReservasiLabel;
+    private javax.swing.JPanel tglReservasiPanel;
     private javax.swing.JTextField totalHargaField;
     private javax.swing.JLabel totalHargaLabel;
     private javax.swing.JPanel totalHargaPanel;
