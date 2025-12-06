@@ -414,31 +414,16 @@ public class LaporanKeuangan extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setupYears() {
-        java.util.Calendar now = java.util.Calendar.getInstance();
-        int currentYear = now.get(java.util.Calendar.YEAR);
-        int currentMonth = now.get(java.util.Calendar.MONTH); // 0-11
-        
+        String[] years = {"2024", "2025", "2026", "2027", "2028"};
         tahunHarianComboBox.removeAllItems();
         tahunMingguanComboBox.removeAllItems();
         tahunBulananComboBox.removeAllItems();
         
-        // Generate years (e.g., 2 years back, 2 years forward)
-        for (int i = currentYear - 2; i <= currentYear + 2; i++) {
-            String y = String.valueOf(i);
+        for (String y : years) {
             tahunHarianComboBox.addItem(y);
             tahunMingguanComboBox.addItem(y);
             tahunBulananComboBox.addItem(y);
-        }
-        
-        // Set default year to current year
-        String currentYearStr = String.valueOf(currentYear);
-        tahunHarianComboBox.setSelectedItem(currentYearStr);
-        tahunMingguanComboBox.setSelectedItem(currentYearStr);
-        tahunBulananComboBox.setSelectedItem(currentYearStr);
-        
-        // Set default month to current month
-        bulanHarianComboBox.setSelectedIndex(currentMonth);
-        bulanMingguanComboBox.setSelectedIndex(currentMonth);
+        };
     }
 
     private void loadLaporanHarian() {
@@ -447,40 +432,65 @@ public class LaporanKeuangan extends javax.swing.JFrame {
         
         int bulan = bulanHarianComboBox.getSelectedIndex() + 1;
         String tahun = (String) tahunHarianComboBox.getSelectedItem();
+        int indexMinggu = mingguanHarianComboBox.getSelectedIndex(); 
+ 
+        int startDay = 1;
+        int endDay = 31;
         
+        if (indexMinggu == 0) {      
+            startDay = 1; endDay = 7;
+        } else if (indexMinggu == 1) { 
+            startDay = 8; endDay = 14;
+        } else if (indexMinggu == 2) {
+            startDay = 15; endDay = 21;
+        } else if (indexMinggu == 3) { 
+            startDay = 22; endDay = 31;
+        }
+
         try {
             Connection con = Koneksi.getConnection();
             
             String sql = "SELECT reservation_date, SUM(total_price) as pendapatan " +
                          "FROM reservation " +
-                         "WHERE MONTH(reservation_date) = ? AND YEAR(reservation_date) = ? " +
+                         "WHERE MONTH(reservation_date) = ? " +
+                         "AND YEAR(reservation_date) = ? " +
+                         "AND DAY(reservation_date) BETWEEN ? AND ? " + 
                          "AND status_payment = 'PAID' " +
-                         "GROUP BY reservation_date ORDER BY reservation_date ASC";
+                         "GROUP BY reservation_date " +
+                         "ORDER BY reservation_date ASC";
             
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, bulan);
             ps.setString(2, tahun);
+            ps.setInt(3, startDay);
+            ps.setInt(4, endDay);
+            
             ResultSet rs = ps.executeQuery();
             
             int no = 1;
             double totalKeseluruhan = 0;
+            boolean adaData = false;
             
             while(rs.next()) {
+                adaData = true;
                 double pendapatan = rs.getDouble("pendapatan");
                 totalKeseluruhan += pendapatan;
                 
                 model.addRow(new Object[]{
                     no++,
-                    rs.getDate("reservation_date"), 
+                    rs.getDate("reservation_date"),
                     formatRupiah(pendapatan)
                 });
             }
-
-            model.addRow(new Object[]{"", "TOTAL", formatRupiah(totalKeseluruhan)});
+            
+            if (adaData) {
+                model.addRow(new Object[]{"", "TOTAL", formatRupiah(totalKeseluruhan)});
+            } else {
+            }
             
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Gagal memuat data Harian: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Gagal memuat data: " + e.getMessage());
         }
     }
 
@@ -576,7 +586,6 @@ public class LaporanKeuangan extends javax.swing.JFrame {
     
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         int selectedIndex = laporanTabbedPane.getSelectedIndex();
-        // Panggil fungsi load sesuai tab
         if (selectedIndex == 0) {
             loadLaporanHarian();
         } else if (selectedIndex == 1) {
