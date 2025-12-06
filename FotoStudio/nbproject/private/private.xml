@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Universitas%20Padjadjaran/Semester%203/Pemrograman%20Berorientasi%20Objek/Tugas%20Besar/pbo-tugas-besar-kelompok/FotoStudio/src/ui/Daftar.java</file>
-            <file>file:/D:/Universitas%20Padjadjaran/Semester%203/Pemrograman%20Berorientasi%20Objek/Tugas%20Besar/pbo-tugas-besar-kelompok/FotoStudio/src/ui/Masuk.java</file>
-            <file>file:/D:/Universitas%20Padjadjaran/Semester%203/Pemrograman%20Berorientasi%20Objek/Tugas%20Besar/pbo-tugas-besar-kelompok/FotoStudio/src/ui/User/BuatReservasiBayar.java</file>
-            <file>file:/D:/Universitas%20Padjadjaran/Semester%203/Pemrograman%20Berorientasi%20Objek/Tugas%20Besar/pbo-tugas-besar-kelompok/FotoStudio/src/ui/User/BuatReservasiDetail.java</file>
+            <file>file:/C:/Users/newte/OneDrive/Documents/NetBeansProjects/pbo-tugas-besar-kelompok/FotoStudio/src/ui/PegawaiAdmin/EditPegawai.java</file>
+            <file>file:/C:/Users/newte/OneDrive/Documents/NetBeansProjects/pbo-tugas-besar-kelompok/FotoStudio/src/ui/PegawaiAdmin/KelolaReservasi.java</file>
+            <file>file:/C:/Users/newte/OneDrive/Documents/NetBeansProjects/pbo-tugas-besar-kelompok/FotoStudio/src/ui/PegawaiAdmin/KelolaReservasiPopup.java</file>
+            <file>file:/C:/Users/newte/OneDrive/Documents/NetBeansProjects/pbo-tugas-besar-kelompok/FotoStudio/src/ui/PegawaiAdmin/LaporanKeuangan.java</file>
+            <file>file:/C:/Users/newte/OneDrive/Documents/NetBeansProjects/pbo-tugas-besar-kelompok/FotoStudio/src/ui/PegawaiAdmin/RiwayatReservasi.java</file>
+            <file>file:/C:/Users/newte/OneDrive/Documents/NetBeansProjects/pbo-tugas-besar-kelompok/FotoStudio/src/ui/PegawaiAdmin/TambahPegawai.java</file>
         </group>
     </open-files>
 </project-private>

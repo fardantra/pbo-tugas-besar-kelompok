@@ -26,7 +26,7 @@ public class KelolaReservasi extends javax.swing.JFrame {
         updateDayBox();    
 
         tahunComboBox.addActionListener(e -> updateDayBox());
-        // --------------------------
+        bulanComboBox.addActionListener(e -> updateDayBox());
     }
 
     /**
@@ -325,7 +325,7 @@ public class KelolaReservasi extends javax.swing.JFrame {
 
     private void checkAvailability() {
         String tgl = (String) hariComboBox.getSelectedItem();
-        String bln = String.valueOf(bulanComboBox.getSelectedIndex() + 1); // 1-12
+        String bln = String.valueOf(bulanComboBox.getSelectedIndex() + 1); 
         String thn = (String) tahunComboBox.getSelectedItem();
         String jam = (String) jamComboBox.getSelectedItem();
         String menit = (String) menitComboBox.getSelectedItem();
@@ -368,17 +368,11 @@ public class KelolaReservasi extends javax.swing.JFrame {
     }
     
     private void setupYears() {
-        Calendar now = Calendar.getInstance();
-        int currentYear = now.get(Calendar.YEAR);
-        
         tahunComboBox.removeAllItems();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 0; i < 5; i++) {
             tahunComboBox.addItem(String.valueOf(currentYear + i));
         }
-        tahunComboBox.setSelectedItem(String.valueOf(currentYear));
-        
-        // Set default month
-        bulanComboBox.setSelectedIndex(now.get(Calendar.MONTH));
     }
 
     private void setupTimes() {
@@ -392,43 +386,6 @@ public class KelolaReservasi extends javax.swing.JFrame {
         menitComboBox.addItem("15");
         menitComboBox.addItem("30");
         menitComboBox.addItem("45");
-        
-        // Default time logic
-        Calendar now = Calendar.getInstance();
-        int hour = now.get(Calendar.HOUR_OF_DAY);
-        int minute = now.get(Calendar.MINUTE);
-        
-        int nextMinuteIndex = 0;
-        
-        if (minute < 15) {
-            nextMinuteIndex = 1; 
-        } else if (minute < 30) {
-            nextMinuteIndex = 2; 
-        } else if (minute < 45) {
-            nextMinuteIndex = 3; 
-        } else {
-            nextMinuteIndex = 0; 
-            hour++;
-        }
-
-        if (hour < 8) {
-            hour = 8;
-            nextMinuteIndex = 0;
-        } else if (hour > 20) {
-            now.add(Calendar.DAY_OF_MONTH, 1);
-
-            tahunComboBox.setSelectedItem(String.valueOf(now.get(Calendar.YEAR)));
-            bulanComboBox.setSelectedIndex(now.get(Calendar.MONTH));
-            
-            hour = 8;
-            nextMinuteIndex = 0;
-        }
-
-        String hourStr = String.format("%02d", hour);
-        if (hour >= 8 && hour <= 20) {
-            jamComboBox.setSelectedItem(hourStr);
-        }
-        menitComboBox.setSelectedIndex(nextMinuteIndex);
     }
 
     private void updateDayBox() {
@@ -436,7 +393,6 @@ public class KelolaReservasi extends javax.swing.JFrame {
         
         int bulan = bulanComboBox.getSelectedIndex(); 
         Object tahunObj = tahunComboBox.getSelectedItem();
-        
         if (tahunObj == null) return;
         
         int tahun = Integer.parseInt(tahunObj.toString());
@@ -450,12 +406,8 @@ public class KelolaReservasi extends javax.swing.JFrame {
         for (int i = 1; i <= maxDay; i++) {
             hariComboBox.addItem(String.valueOf(i));
         }
-        
-        Calendar now = Calendar.getInstance();
-        if (tahun == now.get(Calendar.YEAR) && bulan == now.get(Calendar.MONTH)) {
-             hariComboBox.setSelectedItem(String.valueOf(now.get(Calendar.DAY_OF_MONTH)));
-        }
     }
+    
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         slot1Button.setBackground(java.awt.Color.GREEN);
         slot2Button.setBackground(java.awt.Color.GREEN);
@@ -470,47 +422,55 @@ public class KelolaReservasi extends javax.swing.JFrame {
         String jam = (String) jamComboBox.getSelectedItem();
         String menit = (String) menitComboBox.getSelectedItem();
 
-        if ("Day".equals(tgl) || "Year".equals(thn)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Pilih tanggal dengan benar!");
-            return;
-        }
+        if (tgl == null || thn == null) return;
 
         String dateStr = thn + "-" + bln + "-" + tgl;
-        String timeStr = jam + ":" + menit + ":00";
+        String timeStr = jam + ":" + menit + ":00"; 
 
         try {
-            java.sql.Connection con = db.Koneksi.getConnection();
-            String sql = "SELECT r.reservation_id, p.studio_id FROM reservation r " +
+            Connection con = Koneksi.getConnection();
+            
+            String sql = "SELECT r.reservation_id, p.studio_id " +
+                         "FROM reservation r " +
                          "JOIN package p ON r.package_id = p.package_id " +
-                         "WHERE r.reservation_date = ? AND r.reservation_time = ? " +
-                         "AND r.status_payment != 'CANCELLED'"; 
+                         "WHERE r.reservation_date = ? " +
+                         "AND r.status_payment != 'CANCELLED' " +
+                         "AND ? >= r.reservation_time " + 
+                         "AND ? < ADDTIME(r.reservation_time, SEC_TO_TIME(p.duration * 60))";
 
-            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, dateStr);
-            ps.setString(2, timeStr);
-            java.sql.ResultSet rs = ps.executeQuery();
+            ps.setString(2, timeStr); 
+            ps.setString(3, timeStr); 
+            
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 int studio = rs.getInt("studio_id");
                 int resId = rs.getInt("reservation_id");
 
                 if (studio == 1) {
-                    slot1Button.setBackground(java.awt.Color.RED); 
+                    slot1Button.setBackground(java.awt.Color.RED);
                     idResSlot1 = resId; 
                 } else if (studio == 2) {
-                    slot2Button.setBackground(java.awt.Color.RED); 
-                    idResSlot2 = resId; 
+                    slot2Button.setBackground(java.awt.Color.RED);
+                    idResSlot2 = resId;
                 }
             }
-        } catch (Exception e) {
+            
+            rs.close();
+            ps.close();
+            
+        } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void slot1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slot1ButtonActionPerformed
         if (idResSlot1 != 0) {
-        new ui.PegawaiAdmin.KelolaReservasiPopup(idResSlot1).setVisible(true);
-        this.dispose();
+            new ui.PegawaiAdmin.KelolaReservasiPopup(idResSlot1).setVisible(true);
+            this.dispose();
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Slot Kosong (Available)");
         }
@@ -518,8 +478,8 @@ public class KelolaReservasi extends javax.swing.JFrame {
 
     private void slot2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slot2ButtonActionPerformed
         if (idResSlot2 != 0) {
-        new ui.PegawaiAdmin.KelolaReservasiPopup(idResSlot2).setVisible(true);
-        this.dispose();
+            new ui.PegawaiAdmin.KelolaReservasiPopup(idResSlot2).setVisible(true);
+            this.dispose();
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Slot Kosong (Available)");
         }
@@ -531,11 +491,11 @@ public class KelolaReservasi extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         model.User user = util.SessionManager.getInstance().getCurrentUser();
-
-        if (user.getRole() == 0) { 
-            new ui.Homepage.HomepageAdmin().setVisible(true);
-        } else { 
-            new ui.Homepage.HomepagePegawai().setVisible(true);
+        if (user != null) {
+            if (user.getRole() == 0) new ui.Homepage.HomepageAdmin().setVisible(true);
+            else new ui.Homepage.HomepagePegawai().setVisible(true);
+        } else {
+            new ui.Masuk().setVisible(true);
         }
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
