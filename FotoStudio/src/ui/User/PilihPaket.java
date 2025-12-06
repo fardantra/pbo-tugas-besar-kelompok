@@ -328,7 +328,7 @@ public class PilihPaket extends javax.swing.JFrame {
                     .addComponent(fasilitiasIsi1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jumlahOrangLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(paketButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         paketPanel1Layout.setVerticalGroup(
             paketPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -455,7 +455,7 @@ public class PilihPaket extends javax.swing.JFrame {
                     .addComponent(fasilitiasIsi1Label1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jumlahOrangLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(paketButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         paketPanel2Layout.setVerticalGroup(
             paketPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -631,9 +631,9 @@ public class PilihPaket extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(bodyPanelLayout.createSequentialGroup()
                         .addComponent(paketPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(19, 19, 19)
                         .addComponent(paketPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addGap(19, 19, 19)
                         .addComponent(paketPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40))))
         );
@@ -753,134 +753,54 @@ public class PilihPaket extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JPanel bodyPanel;
-    private javax.swing.JLabel cocokUntukIsi1Label2;
-    private javax.swing.JLabel cocokUntukIsi1Label3;
     private javax.swing.JLabel cocokUntukIsi2Label;
     private javax.swing.JLabel cocokUntukIsi2Label1;
-    private javax.swing.JLabel cocokUntukIsi2Label2;
-    private javax.swing.JLabel cocokUntukIsi2Label3;
     private javax.swing.JLabel cocokUntukIsi2Label4;
     private javax.swing.JLabel cocokUntukIsi3Label;
     private javax.swing.JLabel cocokUntukIsi3Label1;
-    private javax.swing.JLabel cocokUntukIsi3Label2;
-    private javax.swing.JLabel cocokUntukIsi3Label3;
     private javax.swing.JLabel cocokUntukIsi3Label4;
     private javax.swing.JLabel cocokUntukIsiLabel1;
     private javax.swing.JLabel cocokUntukIsiLabel2;
     private javax.swing.JLabel cocokUntukIsiLabel3;
     private javax.swing.JLabel cocokUntukLabel;
     private javax.swing.JLabel cocokUntukLabel1;
-    private javax.swing.JLabel cocokUntukLabel2;
-    private javax.swing.JLabel cocokUntukLabel3;
     private javax.swing.JLabel cocokUntukLabel4;
     private javax.swing.JLabel durasiSesiIsiLabel;
     private javax.swing.JLabel durasiSesiIsiLabel1;
-    private javax.swing.JLabel durasiSesiIsiLabel2;
-    private javax.swing.JLabel durasiSesiIsiLabel3;
     private javax.swing.JLabel durasiSesiIsiLabel4;
     private javax.swing.JLabel durasiSesiLabel;
     private javax.swing.JLabel durasiSesiLabel1;
-    private javax.swing.JLabel durasiSesiLabel2;
-    private javax.swing.JLabel durasiSesiLabel3;
     private javax.swing.JLabel durasiSesiLabel4;
     private javax.swing.JLabel fasilitasIsi2Label;
     private javax.swing.JLabel fasilitasIsi2Label1;
-    private javax.swing.JLabel fasilitasIsi2Label2;
-    private javax.swing.JLabel fasilitasIsi2Label3;
     private javax.swing.JLabel fasilitasIsi2Label4;
     private javax.swing.JLabel fasilitasIsi3Label;
     private javax.swing.JLabel fasilitasIsi3Label1;
-    private javax.swing.JLabel fasilitasIsi3Label2;
-    private javax.swing.JLabel fasilitasIsi3Label3;
     private javax.swing.JLabel fasilitasIsi3Label4;
     private javax.swing.JLabel fasilitasLabel;
     private javax.swing.JLabel fasilitasLabel1;
-    private javax.swing.JLabel fasilitasLabel2;
-    private javax.swing.JLabel fasilitasLabel3;
     private javax.swing.JLabel fasilitasLabel4;
     private javax.swing.JLabel fasilitiasIsi1Label;
     private javax.swing.JLabel fasilitiasIsi1Label1;
-    private javax.swing.JLabel fasilitiasIsi1Label2;
-    private javax.swing.JLabel fasilitiasIsi1Label3;
     private javax.swing.JLabel fasilitiasIsi1Label4;
     private javax.swing.JLabel hargaIsiLabel;
     private javax.swing.JLabel hargaIsiLabel1;
-    private javax.swing.JLabel hargaIsiLabel2;
-    private javax.swing.JLabel hargaIsiLabel3;
     private javax.swing.JLabel hargaIsiLabel4;
     private javax.swing.JLabel hargaLabel;
     private javax.swing.JLabel hargaLabel1;
-    private javax.swing.JLabel hargaLabel2;
-    private javax.swing.JLabel hargaLabel3;
     private javax.swing.JLabel hargaLabel4;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
-    private javax.swing.JLabel jLabel42;
-    private javax.swing.JLabel jLabel43;
-    private javax.swing.JLabel jLabel44;
-    private javax.swing.JLabel jLabel45;
-    private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
-    private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
-    private javax.swing.JLabel jLabel50;
-    private javax.swing.JLabel jLabel51;
-    private javax.swing.JLabel jLabel52;
-    private javax.swing.JLabel jLabel53;
-    private javax.swing.JLabel jLabel54;
-    private javax.swing.JLabel jLabel55;
-    private javax.swing.JLabel jLabel56;
     private javax.swing.JLabel jumlahOrangIsiLabel;
     private javax.swing.JLabel jumlahOrangIsiLabel1;
-    private javax.swing.JLabel jumlahOrangIsiLabel2;
-    private javax.swing.JLabel jumlahOrangIsiLabel3;
     private javax.swing.JLabel jumlahOrangIsiLabel4;
     private javax.swing.JLabel jumlahOrangLabel;
     private javax.swing.JLabel jumlahOrangLabel1;
-    private javax.swing.JLabel jumlahOrangLabel2;
-    private javax.swing.JLabel jumlahOrangLabel3;
     private javax.swing.JLabel jumlahOrangLabel4;
     private javax.swing.JPanel navbarPanel;
-    private javax.swing.JPanel paket1panel1;
-    private javax.swing.JPanel paket1panel2;
-    private javax.swing.JPanel paket1panel3;
     private javax.swing.JButton paketButton;
     private javax.swing.JButton paketButton1;
-    private javax.swing.JButton paketButton2;
-    private javax.swing.JButton paketButton3;
     private javax.swing.JButton paketButton4;
     private javax.swing.JPanel paketPanel1;
     private javax.swing.JPanel paketPanel2;
-    private javax.swing.JPanel paketPanel3;
-    private javax.swing.JPanel paketPanel4;
     private javax.swing.JPanel paketPanel5;
     private javax.swing.JLabel title;
     private javax.swing.JLabel title1;
