@@ -36,13 +36,10 @@ public class RiwayatReservasiUser extends javax.swing.JFrame {
         try {
             Connection con = Koneksi.getConnection();
             
-            String sql = "SELECT r.reservation_id, r.reservation_date, " +
-                        "u.full_name, u.address, u.email, " +
-                        "p.name as package_name, p.studio_id, " +
-                        "(r.total_price / p.price) as jumlah_orang, " +
+            String sql = "SELECT r.reservation_id, r.reservation_date, r.reservation_time, " +
+                        "p.name as package_name, p.studio_id, p.price as harga_paket, " + 
                         "r.total_price, r.status_payment " +
                         "FROM reservation r " +
-                        "JOIN user u ON r.user_id = u.user_id " +
                         "JOIN package p ON r.package_id = p.package_id " +
                         "WHERE r.user_id = ? " +
                         "ORDER BY r.created_at DESC";
@@ -52,26 +49,25 @@ public class RiwayatReservasiUser extends javax.swing.JFrame {
             
             ResultSet rs = pstmt.executeQuery();
             
-            while (rs.next()) {
+                while (rs.next()) {
+                double total = rs.getDouble("total_price");
+                double hargaPaket = rs.getDouble("harga_paket");
+                int jumlahOrang = (hargaPaket > 0) ? (int)(total / hargaPaket) : 0;
+
                 Object[] row = {
                     rs.getInt("reservation_id"),
                     rs.getDate("reservation_date"),
-                    rs.getString("full_name"),
-                    rs.getString("address"),
-                    rs.getString("email"),
                     rs.getString("package_name"),
                     "Studio " + rs.getInt("studio_id"),
-                    rs.getInt("jumlah_orang") + " orang",
-                    "Rp" + String.format("%,.0f", rs.getDouble("total_price")),
-                    rs.getString("status_payment")
+                    jumlahOrang + " Orang", 
+                    "Rp " + String.format("%,.0f", total),
+                    rs.getString("status_payment"),
+                    rs.getTime("reservation_time") 
                 };
                 model.addRow(row);
             }
-            
             rs.close();
-            pstmt.close();
-            Koneksi.closeConnection(con);
-            
+            pstmt.close();  
         } catch (SQLException e) {
             e.printStackTrace();
             logger.severe("Error loading reservation history: " + e.getMessage());
@@ -126,7 +122,6 @@ public class RiwayatReservasiUser extends javax.swing.JFrame {
         judulLabel.setFont(new java.awt.Font("Poppins Medium", 0, 24)); // NOI18N
         judulLabel.setText("Riwayat Reservasi");
 
-        okButton.setBackground(new java.awt.Color(255, 255, 255));
         okButton.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         okButton.setText("OK");
         okButton.setBorder(javax.swing.BorderFactory.createCompoundBorder());
@@ -139,13 +134,13 @@ public class RiwayatReservasiUser extends javax.swing.JFrame {
         riwayatReservasiTable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         riwayatReservasiTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Tanggal", "Nama", "Alamat", "Email", "Paket", "Studio", "Jumlah", "Harga", "Status"
+                "ID", "Tanggal", "Paket", "Studio", "Jumlah", "Harga", "Status", "Jam"
             }
         ));
         riwayatReservasiScrollPane.setViewportView(riwayatReservasiTable);
@@ -155,18 +150,19 @@ public class RiwayatReservasiUser extends javax.swing.JFrame {
         bodyPanelLayout.setHorizontalGroup(
             bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bodyPanelLayout.createSequentialGroup()
-                .addContainerGap(564, Short.MAX_VALUE)
-                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
-            .addGroup(bodyPanelLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
                 .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(riwayatReservasiScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
                     .addGroup(bodyPanelLayout.createSequentialGroup()
+                        .addContainerGap(564, Short.MAX_VALUE)
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(bodyPanelLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
                         .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(logoLabel)
-                            .addComponent(judulLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(riwayatReservasiScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+                            .addGroup(bodyPanelLayout.createSequentialGroup()
+                                .addGroup(bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(logoLabel)
+                                    .addComponent(judulLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(40, 40, 40))
         );
         bodyPanelLayout.setVerticalGroup(
