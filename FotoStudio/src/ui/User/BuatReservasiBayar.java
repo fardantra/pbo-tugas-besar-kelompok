@@ -11,6 +11,7 @@ import model.User;
 import util.SessionManager;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import java.util.Calendar;
 
 /**
  *
@@ -48,6 +49,22 @@ public class BuatReservasiBayar extends javax.swing.JFrame {
     }
     
     private void saveReservation() {
+        if (checkReservationConflict()) {
+            JOptionPane.showMessageDialog(this, 
+                "Maaf, studio sudah dipesan pada waktu tersebut!\n" +
+                "Silakan pilih waktu lain.", 
+                "Konflik Jadwal", 
+                JOptionPane.ERROR_MESSAGE);
+            
+            // Kembali ke form detail untuk memilih ulang
+            BuatReservasiDetail detailForm = new BuatReservasiDetail(
+                selectedPackage, reservationDate, reservationTime
+            );
+            detailForm.setVisible(true);
+            this.dispose();
+            return;
+        }
+
         try {
             User currentUser = SessionManager.getInstance().getCurrentUser();
             
@@ -294,6 +311,52 @@ public class BuatReservasiBayar extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(816, 639));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private boolean checkReservationConflict() {
+        try {
+            Connection con = Koneksi.getConnection();
+            
+            // Hitung waktu selesai
+            int duration = selectedPackage.getDuration();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(reservationTime);
+            cal.add(Calendar.MINUTE, duration);
+            java.sql.Time endTime = new java.sql.Time(cal.getTimeInMillis());
+            
+            String sql = "SELECT COUNT(*) FROM reservation r " +
+                        "JOIN package p ON r.package_id = p.package_id " +
+                        "WHERE p.studio_id = ? " +
+                        "AND r.reservation_date = ? " +
+                        "AND r.reservation_time < ? " +
+                        "AND ADDTIME(r.reservation_time, SEC_TO_TIME(p.duration * 60)) > ? " +
+                        "AND r.reservation_id != ? " + // abaikan dirinya sendiri (untuk update)
+                        "AND r.status_payment != 'CANCELLED'";
+            
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, selectedStudio.getStudioId());
+            pstmt.setDate(2, reservationDate);
+            pstmt.setTime(3, endTime);
+            pstmt.setTime(4, reservationTime);
+            pstmt.setInt(5, generatedReservationId);
+            
+            ResultSet rs = pstmt.executeQuery();
+            boolean hasConflict = false;
+            
+            if (rs.next()) {
+                hasConflict = rs.getInt(1) > 0;
+            }
+            
+            rs.close();
+            pstmt.close();
+            Koneksi.closeConnection(con);
+            
+            return hasConflict;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return true; // Jika error, anggap ada konflik
+        }
+    }
 
     private void kembaliHompageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kembaliHompageButtonActionPerformed
         new ui.Homepage.HomepageUser().setVisible(true);

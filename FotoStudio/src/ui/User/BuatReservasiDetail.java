@@ -12,6 +12,7 @@ import util.SessionManager;
 import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -77,9 +78,26 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
     private void loadAvailableStudios() {
         try {
             Connection con = Koneksi.getConnection();
-            String sql = "SELECT * FROM studio WHERE studio_id = ? AND status = TRUE";
+            
+            // Query studio yang aktif DAN tersedia pada tanggal/waktu tersebut
+            String sql = "SELECT s.* FROM studio s " +
+                        "WHERE s.studio_id = ? " +
+                        "AND s.status = TRUE " +
+                        "AND NOT EXISTS ( " +
+                        "  SELECT 1 FROM reservation r " +
+                        "  JOIN package p ON r.package_id = p.package_id " +
+                        "  WHERE p.studio_id = s.studio_id " +
+                        "  AND r.reservation_date = ? " +
+                        "  AND r.reservation_time < ADDTIME(?, SEC_TO_TIME(p.duration * 60)) " +
+                        "  AND ADDTIME(r.reservation_time, SEC_TO_TIME(p.duration * 60)) > ? " +
+                        "  AND r.status_payment != 'CANCELLED'" +
+                        ")";
+            
             PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, selectedPackage.getStudioId());
+            pstmt.setDate(2, reservationDate);
+            pstmt.setTime(3, reservationTime);
+            pstmt.setTime(4, reservationTime);
             
             ResultSet rs = pstmt.executeQuery();
             
@@ -93,14 +111,21 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
                 studio.setStatus(rs.getBoolean("status"));
                 
                 availableStudios.add(studio);
-                studioComboBox.addItem("Studio " + studio.getStudioId());
+                studioComboBox.addItem("Studio " + studio.getStudioId() + 
+                                    " (Kapasitas: " + studio.getCapacity() + " orang)");
             }
             
             if (availableStudios.isEmpty()) {
                 JOptionPane.showMessageDialog(this, 
-                    "Tidak ada studio tersedia untuk paket ini!", 
+                    "Tidak ada studio tersedia untuk tanggal/waktu ini!\n" +
+                    "Silakan pilih tanggal/waktu lain.", 
                     "Studio Tidak Tersedia", 
                     JOptionPane.WARNING_MESSAGE);
+                
+                // Kembali ke form pilih tanggal
+                new BuatReservasi(selectedPackage).setVisible(true);
+                this.dispose();
+                return;
             }
             
             rs.close();
@@ -110,6 +135,10 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
             logger.severe("Error loading studios: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, 
+                "Gagal memeriksa ketersediaan studio!\n" + e.getMessage(), 
+                "Database Error", 
+                JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -486,7 +515,52 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailFieldActionPerformed
 
-    
+    private boolean isStudioAvailable(int studioId, java.sql.Date date, java.sql.Time time) {
+        try {
+            Connection con = Koneksi.getConnection();
+            
+            // Hitung waktu berakhir (durasi paket + waktu mulai)
+            int duration = selectedPackage.getDuration();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(time);
+            cal.add(Calendar.MINUTE, duration);
+            java.sql.Time endTime = new java.sql.Time(cal.getTimeInMillis());
+            
+            // Cek apakah ada reservasi yang bertabrakan
+            String sql = "SELECT COUNT(*) FROM reservation r " +
+                        "JOIN package p ON r.package_id = p.package_id " +
+                        "WHERE p.studio_id = ? " +
+                        "AND r.reservation_date = ? " +
+                        "AND r.reservation_time < ? " +  // waktu mulai reservasi lain < waktu selesai kita
+                        "AND ADDTIME(r.reservation_time, SEC_TO_TIME(p.duration * 60)) > ? " + // waktu selesai reservasi lain > waktu mulai kita
+                        "AND r.status_payment != 'CANCELLED'"; // abaikan yang cancelled
+            
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, studioId);
+            pstmt.setDate(2, date);
+            pstmt.setTime(3, endTime); // end time kita
+            pstmt.setTime(4, time); // start time kita
+            
+            ResultSet rs = pstmt.executeQuery();
+            boolean available = false;
+            
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                available = (count == 0);
+            }
+            
+            rs.close();
+            pstmt.close();
+            Koneksi.closeConnection(con);
+            
+            return available;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.severe("Error checking studio availability: " + e.getMessage());
+            return false; // Jika error, anggap tidak tersedia
+        }
+    }
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         if (jumlahComboBox.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Pilih jumlah orang terlebih dahulu!");

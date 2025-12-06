@@ -134,6 +134,8 @@ public class BuatReservasi extends javax.swing.JFrame {
         menitComboBox.setSelectedIndex(nextMinuteIndex);
     }
 
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -357,7 +359,7 @@ public class BuatReservasi extends javax.swing.JFrame {
 
         setBounds(0, 0, 816, 639);
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void bulanComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulanComboBoxActionPerformed
 
     }//GEN-LAST:event_bulanComboBoxActionPerformed
