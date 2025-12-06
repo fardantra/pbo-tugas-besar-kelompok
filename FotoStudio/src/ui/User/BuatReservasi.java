@@ -5,8 +5,10 @@
 package ui.User;
 
 import model.Package;
+import model.Studio;
 import util.SessionManager;
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -400,8 +402,25 @@ public class BuatReservasi extends javax.swing.JFrame {
             java.sql.Time sqlTime = new java.sql.Time(selectedDate.getTimeInMillis());
             
             // Pindah ke form detail
-            new BuatReservasiDetail(selectedPackage, sqlDate, sqlTime).setVisible(true);
-            this.dispose();
+            BuatReservasiDetail brd = new BuatReservasiDetail(selectedPackage, sqlDate, sqlTime);
+            brd.loadPackageAndStudio();
+            ArrayList<Studio> availableStudio = brd.getAvailableStudios();
+            if (availableStudio.isEmpty()){
+                String conflictInfo = brd.getReservationConflictInfo(selectedPackage.getStudioId());
+
+                JOptionPane.showMessageDialog(this,
+                        "Studio tidak tersedia pada:\n" +
+                                "Tanggal: " + brd.getReservationDate() + "\n" +
+                                "Waktu: " + brd.getReservationTime() + " (" + brd.getDuration() + " menit)\n\n" +
+                                conflictInfo + "\n\n",
+                        "Studio Sedang Digunakan",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            } else {
+                brd.setVisible(true);
+                this.dispose();
+            }
+
             
         } catch (Exception e) {
             e.printStackTrace();

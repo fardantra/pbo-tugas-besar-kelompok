@@ -27,7 +27,21 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
     private java.sql.Date reservationDate;
     private java.sql.Time reservationTime;
     private ArrayList<Studio> availableStudios = new ArrayList<>();
-    
+
+    public int getDuration() {
+        return duration;
+    }
+
+    private int duration;
+
+    public Date getReservationDate() {
+        return reservationDate;
+    }
+
+    public Time getReservationTime() {
+        return reservationTime;
+    }
+
     /**
      * Creates new form Login
      */
@@ -40,6 +54,7 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
         this.selectedPackage = pkg;
         this.reservationDate = date;
         this.reservationTime = time;
+        this.duration = selectedPackage.getDuration();
 
         initComponents();
         
@@ -52,6 +67,10 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
         
         populateUserData();
         loadPackageAndStudio();
+    }
+
+    public ArrayList<Studio> getAvailableStudios() {
+        return availableStudios;
     }
     
     private void populateUserData() {
@@ -66,7 +85,7 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
         emailField.setEditable(false);
     }
     
-    private void loadPackageAndStudio() {
+    public void loadPackageAndStudio() {
         paketComboBox.removeAllItems();
         paketComboBox.addItem("Paket " + selectedPackage.getPackageId());
         paketComboBox.setEnabled(false);
@@ -74,71 +93,101 @@ public class BuatReservasiDetail extends javax.swing.JFrame {
         loadAvailableStudios();
         setupJumlahOrangComboBox();
     }
-    
+
     private void loadAvailableStudios() {
         try {
             Connection con = Koneksi.getConnection();
-            
-            // Query studio yang aktif DAN tersedia pada tanggal/waktu tersebut
+
+            java.util.Calendar cal = java.util.Calendar.getInstance();
+            cal.setTime(reservationTime);
+            cal.add(java.util.Calendar.MINUTE, duration);
+            java.sql.Time endTime = new java.sql.Time(cal.getTimeInMillis());
+
+            System.out.println("DEBUG: Paket " + selectedPackage.getName() +
+                    ", Durasi: " + duration + " menit");
+            System.out.println("DEBUG: Waktu mulai: " + reservationTime +
+                    ", Waktu selesai: " + endTime);
+
             String sql = "SELECT s.* FROM studio s " +
-                        "WHERE s.studio_id = ? " +
-                        "AND s.status = TRUE " +
-                        "AND NOT EXISTS ( " +
-                        "  SELECT 1 FROM reservation r " +
-                        "  JOIN package p ON r.package_id = p.package_id " +
-                        "  WHERE p.studio_id = s.studio_id " +
-                        "  AND r.reservation_date = ? " +
-                        "  AND r.reservation_time < ADDTIME(?, SEC_TO_TIME(p.duration * 60)) " +
-                        "  AND ADDTIME(r.reservation_time, SEC_TO_TIME(p.duration * 60)) > ? " +
-                        "  AND r.status_payment != 'CANCELLED'" +
-                        ")";
-            
+                    "WHERE s.studio_id = ? " +
+                    "AND s.status = TRUE " +
+                    "AND NOT EXISTS ( " +
+                    "  SELECT 1 FROM reservation r " +
+                    "  JOIN package p ON r.package_id = p.package_id " +
+                    "  WHERE p.studio_id = s.studio_id " +
+                    "  AND r.reservation_date = ? " +
+                    "  AND r.reservation_time < ? " +
+                    "  AND ADDTIME(r.reservation_time, SEC_TO_TIME(p.duration * 60)) > ? " +
+                    "  AND r.status_payment NOT IN ('CANCELLED', 'FAILED', 'REJECTED')" +
+                    ")";
+
             PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, selectedPackage.getStudioId());
             pstmt.setDate(2, reservationDate);
-            pstmt.setTime(3, reservationTime);
+            pstmt.setTime(3, endTime);
             pstmt.setTime(4, reservationTime);
-            
+
             ResultSet rs = pstmt.executeQuery();
-            
+
             studioComboBox.removeAllItems();
             availableStudios.clear();
-            
+
+            int studioCount = 0;
             while (rs.next()) {
                 Studio studio = new Studio();
                 studio.setStudioId(rs.getInt("studio_id"));
                 studio.setCapacity(rs.getInt("capacity"));
                 studio.setStatus(rs.getBoolean("status"));
-                
+
                 availableStudios.add(studio);
-                studioComboBox.addItem("Studio " + studio.getStudioId() + 
-                                    " (Kapasitas: " + studio.getCapacity() + " orang)");
+                studioComboBox.addItem("Studio " + studio.getStudioId() +
+                        " (" + studio.getCapacity() + " org)");
+                studioCount++;
             }
-            
-            if (availableStudios.isEmpty()) {
-                JOptionPane.showMessageDialog(this, 
-                    "Tidak ada studio tersedia untuk tanggal/waktu ini!\n" +
-                    "Silakan pilih tanggal/waktu lain.", 
-                    "Studio Tidak Tersedia", 
-                    JOptionPane.WARNING_MESSAGE);
-                
-                // Kembali ke form pilih tanggal
-                new BuatReservasi(selectedPackage).setVisible(true);
-                this.dispose();
-                return;
-            }
-            
+
+            System.out.println("DEBUG: Found " + studioCount + " available studios");
+
+
             rs.close();
             pstmt.close();
             Koneksi.closeConnection(con);
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
             logger.severe("Error loading studios: " + e.getMessage());
-            JOptionPane.showMessageDialog(this, 
-                "Gagal memeriksa ketersediaan studio!\n" + e.getMessage(), 
-                "Database Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Database error: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public String getReservationConflictInfo(int studioId) {
+        try {
+            Connection con = Koneksi.getConnection();
+
+            String sql = "SELECT r.reservation_time, p.duration, p.name as package_name " +
+                    "FROM reservation r " +
+                    "JOIN package p ON r.package_id = p.package_id " +
+                    "WHERE p.studio_id = ? " +
+                    "AND r.reservation_date = ? " +
+                    "AND r.status_payment NOT IN ('CANCELLED', 'FAILED', 'REJECTED') " +
+                    "ORDER BY r.reservation_time";
+
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, studioId);
+            pstmt.setDate(2, reservationDate);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            rs.close();
+            pstmt.close();
+            Koneksi.closeConnection(con);
+
+            return "Silakan pilih tanggal/waktu lain.";
+
+        } catch (SQLException e) {
+            return "Tidak dapat memeriksa jadwal.";
         }
     }
     
